@@ -1,6 +1,12 @@
 # 自建服务脚本
-
+## 介绍
+纯`docker`环境下自建服务的脚本
+### 期望
+结合ddns实现外网访问
+#### 推荐
+* ipv6+cloudflare-ddns 实现外网访问
 ## 步骤
+* 安装docker
 * 修改 [conf.d](./conf.d/) 下的域名
 * 给予当前用户所需要的权限（或者以sudo运行）
 * sh ./all-in-one.sh $数据存放根目录（默认为/docker_data）
