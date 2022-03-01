@@ -22,7 +22,8 @@ while getopts "d:p:s:" opt; do
         fi
         echo "ssl: $ssl" ;;
     \?)
-        echo "invalid arg" ;;
+        echo "invalid arg"
+        exit 1;;
   esac
 done 
 
