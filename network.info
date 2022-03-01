@@ -24,30 +24,23 @@
         },
         "ConfigOnly": false,
         "Containers": {
-            "19c8584b8bc0e378f0f17267b6f5bef60aefe33dfcc922f8cdefd065829f2e24": {
+            "8820e129ed4ed3bce7a947717abd9d4fa0ec798b741462dc90f392996ef62d71": {
                 "Name": "adguardhome",
-                "EndpointID": "beaa893a25b03b080f7b38c4cb96e76941f7af454b7df5f1c6612e194b6c0bf9",
+                "EndpointID": "47eb2e818ee16c7304dfe429e8a74291e8bc1c18ac766c014787d2229f1429ff",
                 "MacAddress": "02:42:ac:12:00:03",
                 "IPv4Address": "172.18.0.3/16",
                 "IPv6Address": ""
             },
-            "42b61e6a496bf58712a3256128825f9aff7c882ae91706f1691690a16419dcf7": {
+            "9454b5799e08e7153f13d6dd5aec0214447b3340923ebe0192fd1fc5839ad626": {
                 "Name": "portainer",
-                "EndpointID": "763934465b2b5e4e8eb084c8f669930b6e70a1b4ee7b84b2a586d089013c8b93",
+                "EndpointID": "83226d1159dbab7d6f2ce74f230d3deedee7a758bf2bb0d93b25ccf56e173b0e",
                 "MacAddress": "02:42:ac:12:00:02",
                 "IPv4Address": "172.18.0.2/16",
                 "IPv6Address": ""
             },
-            "56ba896811c20db29d9f381e5ae35038bd5c5c4dedbfee17aa23735b2c34316a": {
-                "Name": "nginx",
-                "EndpointID": "4bd5eb2f9fa8e05fefa8c9fe91ccd3d41538bd195a11f1bab38b6dcd5c9eabd9",
-                "MacAddress": "02:42:ac:12:00:05",
-                "IPv4Address": "172.18.0.5/16",
-                "IPv6Address": ""
-            },
-            "b12435327a155e647ae2c99f8c6c4c125c414fca57c94574eb15fd02fd7efa35": {
+            "d064cfca80dc23154758fd25e51bfc99054c25210e50d97c1c51cf2c6d7c994d": {
                 "Name": "filebrowser",
-                "EndpointID": "8f788881579b743058496c232bf3299abc6c9814d61e400560a0ca63a704114b",
+                "EndpointID": "d7b385c4b10ddc4c83f3b62a78f9baf685424a365f963925f913afadec16f27d",
                 "MacAddress": "02:42:ac:12:00:04",
                 "IPv4Address": "172.18.0.4/16",
                 "IPv6Address": ""
