@@ -1,31 +1,40 @@
 #/bin/bash
-while getopts "d:p:s:" opt; do
-  case $opt in
-    d)
-        domain=$OPTARG
-        if [ ! -n "$domain" ]; then  
-            domain="self.docker.com"
-        fi
-        echo "域名:$domain" ;;
+#/bin/bash
+
+while getopts p:d:su OPTION;do
+    case $OPTION in
     p)
         base_data_dir=$OPTARG
-        if [ ! -n "$base_data_dir" ]; then  
-            base_data_dir="/docker_data"
-        fi
-        echo "路径:$base_data_dir" ;;
+        ;;
+    d)
+        domain=$OPTARG
+        ;;
     s)
-        ssl=$OPTARG
-        if [ ! -n "$ssl" ]; then  
-            ssl=0
-        else
-            ssl=1
-        fi
-        echo "ssl: $ssl" ;;
-    \?)
-        echo "invalid arg"
+        ssl=1
+        ;;
+    u)
+        autossh=1
+        ;;
+    ?)
+        echo "get a non option $OPTARG and OPTION is $OPTION"
         exit 1;;
-  esac
-done 
+    esac
+done
+
+if [ ! -n "$domain" ]; then  
+    domain="self.docker.com"
+fi
+
+if [ ! -n "$base_data_dir" ]; then  
+    base_data_dir="/docker_data"
+fi
+
+echo "路径:$base_data_dir" 
+echo "域名:$domain" 
+echo "ssl:$ssl" 
+echo "autossh:$autossh" 
+
+
 
 if [ ! -d $base_data_dir ];then
     mkdir $base_data_dir
