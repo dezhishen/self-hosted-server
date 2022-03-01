@@ -1,14 +1,28 @@
 #/bin/bash
-base_data_dir=$1
-if [ ! -n "$base_data_dir" ]; then  
-    base_data_dir="/docker_data"
-fi
+while getopts "d:p:" opt; do
+  case $opt in
+    d)
+        domain=$OPTARG
+        if [ ! -n "$domain" ]; then  
+            domain="self.docker.com"
+        fi
+        echo "域名：$domain" ;;
+    p)
+        base_data_dir=$OPTARG
+        if [ ! -n "$base_data_dir" ]; then  
+            base_data_dir="/docker_data"
+        fi
+        echo "路径：$base_data_dir" ;;
+    \?)
+        echo "invalid arg" ;;
+  esac
+done 
 
 if [ ! -d $base_data_dir ];then
     mkdir $base_data_dir
 else
-    foldername=$(date +%Y-%M-%d)
-    cp -r $dir $dir.bak.$foldername
+    foldername=$(date +%Y%m%d%H%M%S)
+    cp -r $base_data_dir $base_data_dir.bak.$foldername
     #echo "已备份到：$dir.bak.$foldername"
 fi
 
@@ -24,8 +38,8 @@ funStopContainer(){
     docker ps -a -q --filter "name=$name" | grep -q . && docker rm -fv $name
 }
 
-
-docker network create ingress -d bridge || true
+# 创建网络
+docker network inspect ingress || docker network create --driver bridge ingress
 
 
 # filebrowser
@@ -36,7 +50,6 @@ cp ./filebrowser/filebrowser.db $base_data_dir/filebrowser/
 cp ./filebrowser/filebrowser.json $base_data_dir/filebrowser/
 
 funStopContainer filebrowser 
-
 
 docker run -d --restart=always --name=filebrowser \
 --network=ingress --network-alias=filebrowser \
@@ -82,6 +95,11 @@ funCreateDir $base_data_dir/nginx/conf/conf.d
 
 cp nginx.conf $base_data_dir/nginx/conf/
 cp -r ./conf.d/* $base_data_dir/nginx/conf/conf.d/
+
+
+sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/nginx.conf
+sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/conf.d/*.conf
+
 
 funStopContainer nginx
 
