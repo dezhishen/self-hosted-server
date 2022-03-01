@@ -94,7 +94,7 @@ if [ "$flag" = "y" ];then
     -v $base_data_dir:/srv \
     -v "$base_data_dir/filebrowser/filebrowser.db:/database.db" \
     -v "$base_data_dir/filebrowser/filebrowser.json:/.filebrowser.json" \
-    -e TZ=Asia/shanghai \
+    -e TZ="Asia/Shanghai" \
     filebrowser/filebrowser
 
 fi
@@ -109,7 +109,7 @@ if [ "$flag" = "y" ];then
     funCreateDir $base_data_dir/portainer/data
     funStopContainer portainer 
     docker run -d --restart=always --name=portainer \
-    -e TZ=Asia/shanghai \
+    -e TZ="Asia/Shanghai" \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $base_data_dir/portainer/data:/data \
     --network=ingress --network-alias=portainer \
@@ -128,7 +128,7 @@ if [ "$flag" = "y" ];then
     funStopContainer adguardhome 
     docker run -d --restart=always --name=adguardhome \
     -p 53:53 \
-    -e TZ=Asia/shanghai \
+    -e TZ="Asia/Shanghai" \
     --network=ingress --network-alias=adguardhome \
     -v $base_data_dir/adguardhome/work:/opt/adguardhome/work \
     -v $base_data_dir/adguardhome/conf:/opt/adguardhome/conf \
@@ -180,7 +180,7 @@ if [ "$flag" = "y" ];then
             fi
 
             docker run -it --rm \
-                -e TZ=Asia/shanghai \
+                -e TZ="Asia/Shanghai" \
                 -e CF_Token=`echo $CF_Token` \
                 -e CF_Account_ID=`echo $CF_Account_ID` \
                 -e CF_Zone_ID=`echo $CF_Zone_ID` \
@@ -205,7 +205,7 @@ if [ "$flag" = "y" ];then
             -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
             -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
             -p 80:80 -p 443:443 \
-            -e TZ=Asia/shanghai \
+            -e TZ="Asia/Shanghai" \
             --label=sh.acme.autoload.domain=*.$domain \
             --network=ingress --network-alias=ingress \
             nginx
@@ -247,7 +247,7 @@ if [ "$flag" = "y" ];then
         -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
         -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
         -p 80:80 -p 443:443 \
-        -e TZ=Asia/shanghai \
+        -e TZ="Asia/Shanghai" \
         --network=ingress --network-alias=ingress \
         nginx
     fi
