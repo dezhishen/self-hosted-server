@@ -17,14 +17,19 @@ nginx|反向代理|80；443|$domain
 * ipv6+cloudflare-ddns 实现外网访问
 ## 步骤
 * 安装docker
-* 修改 [conf.d](./conf.d/) 下的域名
+* 修改提供ssl证书
     * 如需外网访问，务必启用https
-    * 如需修改https请参看nginx的官方文档
-    * https证书可以通过[github.com/acmesh-official/acme.sh](https://github.com/acmesh-official/acme.sh)获取
+    * 将ssl的证书的以下放在`./ssl_key`下
+        * private.key
+        * fullchain.cer
+    * 证书获取方式[github.com/acmesh-official/acme.sh](https://github.com/acmesh-official/acme.sh)获取
 * 给予当前用户所需要的权限（或者以sudo运行）
     * docker的权限
     * 根目录的权限
-* sh ./all-in-one.sh -p $数据存放根目录（默认为/docker_data） -d domain (默认为：self.docker.com 如 foo.bar, 最终访问域名为 portainer.foo.bar 等)
+* 执行命令 `./all-in-one.sh`
+    * -p 持久化存储根目录
+    * -d 域名
+    * -s 任意值代表启用https
 
 ## 注意事项
 * 切勿使用已存在的文件夹，或提前备份自己的文件夹

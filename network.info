@@ -1,0 +1,59 @@
+[
+    {
+        "Name": "ingress",
+        "Id": "ec3fd1e313c1f359ee13728940d8f5320159dd31b571c31e278726ac2e838e67",
+        "Created": "2022-03-01T01:05:44.4071521Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "19c8584b8bc0e378f0f17267b6f5bef60aefe33dfcc922f8cdefd065829f2e24": {
+                "Name": "adguardhome",
+                "EndpointID": "beaa893a25b03b080f7b38c4cb96e76941f7af454b7df5f1c6612e194b6c0bf9",
+                "MacAddress": "02:42:ac:12:00:03",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "42b61e6a496bf58712a3256128825f9aff7c882ae91706f1691690a16419dcf7": {
+                "Name": "portainer",
+                "EndpointID": "763934465b2b5e4e8eb084c8f669930b6e70a1b4ee7b84b2a586d089013c8b93",
+                "MacAddress": "02:42:ac:12:00:02",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            },
+            "56ba896811c20db29d9f381e5ae35038bd5c5c4dedbfee17aa23735b2c34316a": {
+                "Name": "nginx",
+                "EndpointID": "4bd5eb2f9fa8e05fefa8c9fe91ccd3d41538bd195a11f1bab38b6dcd5c9eabd9",
+                "MacAddress": "02:42:ac:12:00:05",
+                "IPv4Address": "172.18.0.5/16",
+                "IPv6Address": ""
+            },
+            "b12435327a155e647ae2c99f8c6c4c125c414fca57c94574eb15fd02fd7efa35": {
+                "Name": "filebrowser",
+                "EndpointID": "8f788881579b743058496c232bf3299abc6c9814d61e400560a0ca63a704114b",
+                "MacAddress": "02:42:ac:12:00:04",
+                "IPv4Address": "172.18.0.4/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
