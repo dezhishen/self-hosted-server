@@ -15,7 +15,7 @@ while getopts "d:p:s:" opt; do
         echo "路径:$base_data_dir" ;;
     s)
         ssl=$OPTARG
-        if [ ! -n "$base_data_dir" ]; then  
+        if [ ! -n "$ssl" ]; then  
             ssl=0
         else
             ssl=1
