@@ -4,7 +4,7 @@ if [ ! -n "$base_data_dir" ]; then
     base_data_dir="/docker_data"
 fi
 
-if [ ! -d base_data_dir ];then
+if [ ! -d $base_data_dir ];then
     mkdir $base_data_dir
 else
     foldername=$(date +%Y-%M-%d)
