@@ -77,149 +77,172 @@ docker network inspect ingress > network.info || docker network create --driver 
 
 
 # filebrowser
+echo "是否安装/重装 filebrowser y/n"
+read flag
+if [ "$flag" = "y" ];then
 
-funCreateDir $base_data_dir/filebrowser
+    funCreateDir $base_data_dir/filebrowser
 
-cp ./filebrowser/filebrowser.db $base_data_dir/filebrowser/
-cp ./filebrowser/filebrowser.json $base_data_dir/filebrowser/
+    cp ./filebrowser/filebrowser.db $base_data_dir/filebrowser/
+    cp ./filebrowser/filebrowser.json $base_data_dir/filebrowser/
 
-funStopContainer filebrowser 
+    funStopContainer filebrowser 
 
-docker run -d --restart=always --name=filebrowser \
---network=ingress --network-alias=filebrowser \
--u $(id -u):$(id -g) \
--v $base_data_dir:/srv \
--v "$base_data_dir/filebrowser/filebrowser.db:/database.db" \
--v "$base_data_dir/filebrowser/filebrowser.json:/.filebrowser.json" \
-filebrowser/filebrowser
+    docker run -d --restart=always --name=filebrowser \
+    --network=ingress --network-alias=filebrowser \
+    -u $(id -u):$(id -g) \
+    -v $base_data_dir:/srv \
+    -v "$base_data_dir/filebrowser/filebrowser.db:/database.db" \
+    -v "$base_data_dir/filebrowser/filebrowser.json:/.filebrowser.json" \
+    filebrowser/filebrowser
 
+fi
 
 # portainer
 
-funCreateDir $base_data_dir/portainer
-funCreateDir $base_data_dir/portainer/data
+echo "是否安装/重装 portainer y/n"
+read flag
+if [ "$flag" = "y" ];then
 
-funStopContainer portainer 
-
-docker run -d --restart=always --name=portainer \
--v /var/run/docker.sock:/var/run/docker.sock \
--v $base_data_dir/portainer/data:/data \
---network=ingress --network-alias=portainer \
-portainer/portainer-ce
-
+    funCreateDir $base_data_dir/portainer
+    funCreateDir $base_data_dir/portainer/data
+    funStopContainer portainer 
+    docker run -d --restart=always --name=portainer \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $base_data_dir/portainer/data:/data \
+    --network=ingress --network-alias=portainer \
+    portainer/portainer-ce
+fi
 
 # adguardhome
 
-funCreateDir $base_data_dir/adguardhome
-funCreateDir $base_data_dir/adguardhome/work
-funCreateDir $base_data_dir/adguardhome/conf
-funStopContainer adguardhome 
-docker run -d --restart=always --name=adguardhome \
--p 53:53 \
---network=ingress --network-alias=adguardhome \
--v $base_data_dir/adguardhome/work:/opt/adguardhome/work \
--v $base_data_dir/adguardhome/conf:/opt/adguardhome/conf \
-adguard/adguardhome -p 80
+echo "是否安装/重装 adguardhome y/n"
+read flag
+if [ "$flag" = "y" ];then
+
+    funCreateDir $base_data_dir/adguardhome
+    funCreateDir $base_data_dir/adguardhome/work
+    funCreateDir $base_data_dir/adguardhome/conf
+    funStopContainer adguardhome 
+    docker run -d --restart=always --name=adguardhome \
+    -p 53:53 \
+    --network=ingress --network-alias=adguardhome \
+    -v $base_data_dir/adguardhome/work:/opt/adguardhome/work \
+    -v $base_data_dir/adguardhome/conf:/opt/adguardhome/conf \
+    adguard/adguardhome -p 80
+fi
+# webssh
+
+# echo "是否安装/重装 webssh y/n"
+# read flag
+# if [ "$flag" = "y" ];then
+#     funStopContainer webssh2 
+#     docker run --name webssh2 -d --network=ingress --network-alias=webssh2  psharkey/webssh2
+# fi
 
 # nginx
+echo "是否安装/重装 nginx y/n"
+read flag
+if [ "$flag" = "y" ];then
 
-funCreateDir $base_data_dir/nginx
-funCreateDir $base_data_dir/nginx/conf
-funCreateDir $base_data_dir/nginx/conf/conf.d
-funStopContainer nginx
+    funCreateDir $base_data_dir/nginx
+    funCreateDir $base_data_dir/nginx/conf
+    funCreateDir $base_data_dir/nginx/conf/conf.d
+    funStopContainer nginx
 
-if [ $ssl -eq 1 ]; then
-    cp nginx.conf.https $base_data_dir/nginx/conf/nginx.conf
-    cp -r ./conf.d.https/* $base_data_dir/nginx/conf/conf.d/
-    #funCreateDir $base_data_dir/nginx/ssl
-    funCreateDir $base_data_dir/acmeout
-    if [ $generatessl -eq 1 ]; then
-        if [ ! -n "$CF_Token" ]; then  
-            echo "请输入CF_Token:"
-            read CF_Token
+    if [ $ssl -eq 1 ]; then
+        cp nginx.conf.https $base_data_dir/nginx/conf/nginx.conf
+        cp -r ./conf.d.https/* $base_data_dir/nginx/conf/conf.d/
+        #funCreateDir $base_data_dir/nginx/ssl
+        funCreateDir $base_data_dir/acmeout
+        if [ $generatessl -eq 1 ]; then
+            if [ ! -n "$CF_Token" ]; then  
+                echo "请输入CF_Token:"
+                read CF_Token
+            fi
+
+            if [ ! -n "$CF_Account_ID" ]; then  
+                echo "请输入CF_Account_ID:"
+                read CF_Account_ID
+            fi
+
+            if [ ! -n "$CF_Zone_ID" ]; then  
+                echo "请输入CF_Zone_ID:"
+                read CF_Zone_ID
+            fi
+
+            if [ ! -n "$SSL_EMAIL" ]; then  
+                echo "请输入ssl的邮箱:"
+                read SSL_EMAIL
+            fi
+
+            docker run -it --rm \
+                -e CF_Token=`echo $CF_Token` \
+                -e CF_Account_ID=`echo $CF_Account_ID` \
+                -e CF_Zone_ID=`echo $CF_Zone_ID` \
+                -v $base_data_dir/acmeout:/acme.sh \
+                neilpang/acme.sh --issue -d *.$domain --dns dns_cf -m `echo $SSL_EMAIL` || exit 1
+        else
+            funCreateDir $base_data_dir/acmeout/*.$domain
+            cp -r ./ssl_key/* $base_data_dir/acmeout/*.$domain/
         fi
-
-        if [ ! -n "$CF_Account_ID" ]; then  
-            echo "请输入CF_Account_ID:"
-            read CF_Account_ID
-        fi
-
-        if [ ! -n "$CF_Zone_ID" ]; then  
-            echo "请输入CF_Zone_ID:"
-            read CF_Zone_ID
-        fi
-
-        if [ ! -n "$SSL_EMAIL" ]; then  
-            echo "请输入ssl的邮箱:"
-            read SSL_EMAIL
-        fi
-
-        docker run -it --rm \
-            -e CF_Token=`echo $CF_Token` \
-            -e CF_Account_ID=`echo $CF_Account_ID` \
-            -e CF_Zone_ID=`echo $CF_Zone_ID` \
-            -v $base_data_dir/acmeout:/acme.sh \
-            neilpang/acme.sh --issue -d *.$domain --dns dns_cf -m `echo $SSL_EMAIL` || exit 1
     else
-        funCreateDir $base_data_dir/acmeout/*.$domain
-        cp -r ./ssl_key/* $base_data_dir/acmeout/*.$domain/
+        cp nginx.conf $base_data_dir/nginx/conf/
+        cp -r ./conf.d/* $base_data_dir/nginx/conf/conf.d/
     fi
-else
-    cp nginx.conf $base_data_dir/nginx/conf/
-    cp -r ./conf.d/* $base_data_dir/nginx/conf/conf.d/
-fi
 
-sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/nginx.conf
-sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/conf.d/*.conf
+    sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/nginx.conf
+    sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/conf.d/*.conf
 
-if [ $ssl -eq 1 ] ; then
-    
-    docker run -d --restart=always --name=nginx \
-        -v $base_data_dir/acmeout/*.$domain:/etc/nginx/ssl/ \
+    if [ $ssl -eq 1 ] ; then
+        
+        docker run -d --restart=always --name=nginx \
+            -v $base_data_dir/acmeout/*.$domain:/etc/nginx/ssl/ \
+            -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+            -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
+            -p 80:80 -p 443:443 \
+            --label=sh.acme.autoload.domain=*.$domain \
+            --network=ingress --network-alias=ingress \
+            nginx
+        if [ $autossl -eq 1 ]; then
+            if [ ! -n "$CF_Token" ]; then  
+                echo "请输入CF_Token:"
+                read CF_Token
+            fi
+            if [ ! -n "$CF_Account_ID" ]; then  
+                echo "请输入CF_Account_ID:"
+                read CF_Account_ID
+            fi
+            if [ ! -n "$CF_Zone_ID" ]; then  
+                echo "请输入CF_Zone_ID:"
+                read CF_Zone_ID
+            fi
+            if [ ! -n "$SSL_EMAIL" ]; then  
+                echo "请输入ssl的邮箱:"
+                read SSL_EMAIL
+            fi
+            funStopContainer acme
+            docker run --name=acme --restart=always -d \
+                -e CF_Token=`echo $CF_Token`\
+                -e CF_Account_ID=`echo $CF_Account_ID` \
+                -e CF_Zone_ID=`echo $CF_Zone_ID` \
+                -v $base_data_dir/nginx/ssl:/acme.sh/$domain/ \
+                -v $base_data_dir/acmeout:/acme.sh \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -e DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=*.$domain \
+                -e DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/ssl/*.$domain.key \
+                -e DEPLOY_DOCKER_CONTAINER_CERT_FILE="/etc/nginx/ssl/*.$domain.cer" \
+                -e DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/ssl/ca.cer" \
+                -e DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/ssl/fullchain.cer" \
+                -e DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload" \
+                neilpang/acme.sh daemon
+        fi
+    else
+        docker run -d --restart=always --name=nginx \
         -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
         -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
         -p 80:80 -p 443:443 \
-        --label=sh.acme.autoload.domain=*.$domain \
         --network=ingress --network-alias=ingress \
         nginx
-    if [ $autossl -eq 1 ]; then
-        if [ ! -n "$CF_Token" ]; then  
-            echo "请输入CF_Token:"
-            read CF_Token
-        fi
-        if [ ! -n "$CF_Account_ID" ]; then  
-            echo "请输入CF_Account_ID:"
-            read CF_Account_ID
-        fi
-        if [ ! -n "$CF_Zone_ID" ]; then  
-            echo "请输入CF_Zone_ID:"
-            read CF_Zone_ID
-        fi
-        if [ ! -n "$SSL_EMAIL" ]; then  
-            echo "请输入ssl的邮箱:"
-            read SSL_EMAIL
-        fi
-        funStopContainer acme
-        docker run --name=acme --restart=always -d \
-            -e CF_Token=`echo $CF_Token`\
-            -e CF_Account_ID=`echo $CF_Account_ID` \
-            -e CF_Zone_ID=`echo $CF_Zone_ID` \
-            -v $base_data_dir/nginx/ssl:/acme.sh/$domain/ \
-            -v $base_data_dir/acmeout:/acme.sh \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -e DEPLOY_DOCKER_CONTAINER_LABEL=sh.acme.autoload.domain=*.$domain \
-            -e DEPLOY_DOCKER_CONTAINER_KEY_FILE=/etc/nginx/ssl/*.$domain.key \
-            -e DEPLOY_DOCKER_CONTAINER_CERT_FILE="/etc/nginx/ssl/*.$domain.cer" \
-            -e DEPLOY_DOCKER_CONTAINER_CA_FILE="/etc/nginx/ssl/ca.cer" \
-            -e DEPLOY_DOCKER_CONTAINER_FULLCHAIN_FILE="/etc/nginx/ssl/fullchain.cer" \
-            -e DEPLOY_DOCKER_CONTAINER_RELOAD_CMD="service nginx force-reload" \
-            neilpang/acme.sh daemon
     fi
-else
-    docker run -d --restart=always --name=nginx \
-    -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
-    -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
-    -p 80:80 -p 443:443 \
-    --network=ingress --network-alias=ingress \
-    nginx
 fi
