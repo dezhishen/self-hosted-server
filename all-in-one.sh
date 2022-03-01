@@ -54,9 +54,9 @@ echo "是否自动更新ssl证书:$autossl"
 
 if [ ! -d $base_data_dir ];then
     mkdir $base_data_dir
-else
-    foldername=$(date +%Y%m%d%H%M%S)
-    cp -r $base_data_dir $base_data_dir.bak.$foldername
+# else
+    #foldername=$(date +%Y%m%d%H%M%S)
+    #cp -r $base_data_dir $base_data_dir.bak.$foldername
     #echo "已备份到:$dir.bak.$foldername"
 fi
 
@@ -134,7 +134,6 @@ if [ $ssl -eq 1 ]; then
     #funCreateDir $base_data_dir/nginx/ssl
     funCreateDir $base_data_dir/acmeout
     if [ $generatessl -eq 1 ]; then
-
         if [ ! -n "$CF_Token" ]; then  
             echo "请输入CF_Token:"
             read CF_Token

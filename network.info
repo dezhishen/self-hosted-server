@@ -24,23 +24,23 @@
         },
         "ConfigOnly": false,
         "Containers": {
-            "8820e129ed4ed3bce7a947717abd9d4fa0ec798b741462dc90f392996ef62d71": {
-                "Name": "adguardhome",
-                "EndpointID": "47eb2e818ee16c7304dfe429e8a74291e8bc1c18ac766c014787d2229f1429ff",
-                "MacAddress": "02:42:ac:12:00:03",
-                "IPv4Address": "172.18.0.3/16",
-                "IPv6Address": ""
-            },
-            "9454b5799e08e7153f13d6dd5aec0214447b3340923ebe0192fd1fc5839ad626": {
+            "3e0a56ec224dc0c252dbb1e0e3909746f857b61c8c47e2b1f4c2888a9b045d29": {
                 "Name": "portainer",
-                "EndpointID": "83226d1159dbab7d6f2ce74f230d3deedee7a758bf2bb0d93b25ccf56e173b0e",
+                "EndpointID": "6c9237c7b389eadbdb0ae95d45e5ab90bc95c3101ffc220535a497b0b831c202",
                 "MacAddress": "02:42:ac:12:00:02",
                 "IPv4Address": "172.18.0.2/16",
                 "IPv6Address": ""
             },
-            "d064cfca80dc23154758fd25e51bfc99054c25210e50d97c1c51cf2c6d7c994d": {
+            "41209b1e1bfd37afe0d973dadc0c85d628c91693f8514d44ce1aa9b40a1a7a8a": {
+                "Name": "adguardhome",
+                "EndpointID": "d4b01daedbe3a6c7ea18d9391a53f583075cebaf9f30863f6c11c7fba8d8015f",
+                "MacAddress": "02:42:ac:12:00:03",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "9fbd1b971d28c3b4f4d7d6cc8a39129023ca40927277a795a1127559ad83900a": {
                 "Name": "filebrowser",
-                "EndpointID": "d7b385c4b10ddc4c83f3b62a78f9baf685424a365f963925f913afadec16f27d",
+                "EndpointID": "b822b0f2f164a88b917269a3cc039743d37bbcad2a47adaf15e5d49e409af96e",
                 "MacAddress": "02:42:ac:12:00:04",
                 "IPv4Address": "172.18.0.4/16",
                 "IPv6Address": ""

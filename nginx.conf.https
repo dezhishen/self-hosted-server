@@ -31,10 +31,10 @@ http {
 
     include /etc/nginx/conf.d/*.conf;
 
+    ssl_certificate /etc/nginx/ssl/fullchain.cer;
+    ssl_certificate_key /etc/nginx/ssl/*.$domain.key;
     server {
         listen 443 ssl;
-        ssl_certificate /etc/nginx/ssl/fullchain.cer;
-        ssl_certificate_key /etc/nginx/ssl/*.$domain.key;
         server_name *.$domain;
         root   /usr/share/nginx/html;
         location ~* \.(?:css|js|map|jpe?g|gif|png)$ { }
