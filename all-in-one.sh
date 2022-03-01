@@ -68,7 +68,7 @@ funCreateDir $base_data_dir/portainer/data
 funStopContainer portainer 
 
 docker run -d --restart=always --name=portainer \
--v /var/run/docker.sock:/var/run/docker.sock \
+-v /var/run/docker.sock:/var/run/docker.sock \  
 -v $base_data_dir/portainer/data:/data \
 --network=ingress --network-alias=portainer \
 portainer/portainer-ce
