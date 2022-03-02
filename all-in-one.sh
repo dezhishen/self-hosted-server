@@ -375,7 +375,6 @@ if [ "$flag" = "y" ];then
     funStopContainer nginx
     if [ $ssl -eq 1 ] ; then
         docker run -d --restart=always --name=nginx \
-            -u $(id -u):$(id -g) \
             -v $base_data_dir/acmeout/*.$domain:/etc/nginx/ssl/ \
             -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
             -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
@@ -422,7 +421,6 @@ if [ "$flag" = "y" ];then
     else
         echo "启动nginx..."
         docker run -d --restart=always --name=nginx \
-        -u $(id -u):$(id -g) \
         -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
         -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
         -p 80:80 -p 443:443 \
