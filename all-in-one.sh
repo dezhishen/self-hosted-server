@@ -211,21 +211,28 @@ fi
 
 # webssh
 
-# echo "是否安装/重装 webssh y/n"
-# read flag
-# if [ "$flag" = "y" ];then
-#     echo "复制nginx需要的配置文件"
-#     if [ $ssl -eq 1 ]; then
-#         cp -f ./conf.d.https/webssh2.conf $base_data_dir/nginx/conf/conf.d/webssh2.conf
-#     else
-#         cp -f ./conf.d/webssh2.conf $base_data_dir/nginx/conf/conf.d/webssh2.conf
-#     fi
-#     funStopContainer webssh2 
-#     echo "开始启动容器 webssh2"
-#     docker run --name webssh2 -d --network=ingress --network-alias=webssh2  psharkey/webssh2
-#     echo "完成启动容器 webssh2"
-#     echo "访问路径: webssh2-init.$domain"
-# fi
+echo "是否安装/重装 webssh y/n"
+read flag
+if [ "$flag" = "y" ];then
+    echo "复制nginx需要的配置文件"
+    if [ $ssl -eq 1 ]; then
+        cp -f ./conf.d.https/webssh2.conf $base_data_dir/nginx/conf/conf.d/webssh2.conf
+    else
+        cp -f ./conf.d/webssh2.conf $base_data_dir/nginx/conf/conf.d/webssh2.conf
+    fi
+    funCreateDir $base_data_dir/webssh2
+    if [ ! -f $base_data_dir/webssh2/config.json ];then
+        echo "配置文件[config.json]不存在，创建"
+        cp  -f ./webssh2/config.json $base_data_dir/webssh2/config.json
+    else
+        echo "配置文件[config.json]已存在，跳过"
+    fi
+    funStopContainer webssh2 
+    echo "开始启动容器 webssh2"
+    docker run --name webssh2 -d -v $base_data_dir/webssh2/config.json:/usr/src/config.json --network=ingress --network-alias=webssh2  psharkey/webssh2
+    echo "完成启动容器 webssh2"
+    echo "访问路径: webssh2-init.$domain"
+fi
 
 # aria2
 
