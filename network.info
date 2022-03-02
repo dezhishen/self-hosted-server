@@ -24,32 +24,25 @@
         },
         "ConfigOnly": false,
         "Containers": {
-            "00a95185a66ce34ee30906d115aadf716ce9bfeceb9f1d7ae7c92e9ec31bb26f": {
-                "Name": "portainer",
-                "EndpointID": "48e2923b9254d24e906fd434eb69b966572d67864784a252d8241a1a905b4d44",
-                "MacAddress": "02:42:ac:12:00:02",
-                "IPv4Address": "172.18.0.2/16",
+            "08823068b05a91c65fa764f3599021518a35e78ef85ec5afb2e163ee3d3240db": {
+                "Name": "webssh2",
+                "EndpointID": "dd7ce2ee7f74d0ee7bbfd4f2daa8f05ac58250f9c053442117ee22b37fe774a3",
+                "MacAddress": "02:42:ac:12:00:04",
+                "IPv4Address": "172.18.0.4/16",
                 "IPv6Address": ""
             },
-            "49113e9de652dd3719853f8bc74026e063bf979a6d9055731901395fe7639c49": {
-                "Name": "nginx",
-                "EndpointID": "0bf8da856a2807228a0de423136ae474a34d940dca580bb21198e04554dbbe00",
-                "MacAddress": "02:42:ac:12:00:05",
-                "IPv4Address": "172.18.0.5/16",
-                "IPv6Address": ""
-            },
-            "d2275b8d985d12c5314e70355780159177a592449497ab0abc3099b79e4253cc": {
+            "35501cb94da6ec50fabfa233ae4d0a7269b2d0c8845620e774859fc9c8482247": {
                 "Name": "adguardhome",
-                "EndpointID": "2e46e7733ab6624aa3a8afdd135a1b2a385e06c3f5de97866095da5bdf4a6b01",
+                "EndpointID": "e89a7a0e69a2109cf28614f193b7fe18a6a246d72b463ef86a274bae8c4a4de5",
                 "MacAddress": "02:42:ac:12:00:03",
                 "IPv4Address": "172.18.0.3/16",
                 "IPv6Address": ""
             },
-            "ee2840f8785967bae1d4b9958b695b946639fbeceb2d0b11f1d8a17a1a5b63cc": {
-                "Name": "filebrowser",
-                "EndpointID": "82dc7577417edc1a0e4f3885595ab0b3f618eb2210abe29cfec93980b53d19cf",
-                "MacAddress": "02:42:ac:12:00:04",
-                "IPv4Address": "172.18.0.4/16",
+            "3dd5d66643371013c9c14c346f35322da26f40a8360d28fab375f62725600474": {
+                "Name": "portainer",
+                "EndpointID": "c00766834e409d79cea60fd69beab22684b3092c875704f6e3067c5a042147f0",
+                "MacAddress": "02:42:ac:12:00:02",
+                "IPv4Address": "172.18.0.2/16",
                 "IPv6Address": ""
             }
         },

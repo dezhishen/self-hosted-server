@@ -1,6 +1,17 @@
 # 自建服务脚本
+
+## 介绍
+* 纯`docker`环境下自建服务的脚本
+### 期望
+
+结合ddns实现外网访问
+
+#### 推荐
+* ipv6+cloudflare-ddns 实现外网访问
+
 ## 清单
-* $domain为创建时指定，默认为`self.docker.com`
+* $domain 是反向代理的域名,创建时指定，默认为`self.docker.com`
+* $base_data_dir 是所有存储的根目录，创建时指定，默认为`docker_data`
 
 服务名称|描述|端口|访问地址
 -|-|-|-
@@ -9,12 +20,6 @@ adguardhome|私人dns|53/udp| adguardhome-init.$domain（初始化地址） / ad
 filebrowser|文件管理|-|filebrowser.$domain
 nginx|反向代理|80；443|$domain
 
-## 介绍
-纯`docker`环境下自建服务的脚本
-### 期望
-结合ddns实现外网访问
-#### 推荐
-* ipv6+cloudflare-ddns 实现外网访问
 ## 步骤
 * 安装docker
 * 使用自己的ssl证书
@@ -30,14 +35,27 @@ nginx|反向代理|80；443|$domain
     * -p 持久化存储根目录
     * -d 域名
     * -s 启用https
-    * -g 自动生成https证书（仅支持acme.sh获取的免费时限证书）
-        * 需要提供以下环境变量
-            * `CF_Token`
-            * `CF_Account_ID`
-            * `CF_Zone_ID`
-            * `SSL_EMAIL` ssl证书的邮箱账号
-        * 使用cloudflare，如有其他需求，请自行修改`all-in-one.sh`
-    * -u 自动更新https（仅支持acme.sh获取的免费时限证书）
+    * 由于https证书生成过程经常发生超时问题，请单独生成
+        * 可以考虑通过`generate_ssl.sh`生成        
+        * 使用acme.sh
+        * 文件需要复制到 `$base_data_dir/acmeout/*.$domian` 下
+            ```
+            - ca.cer  
+            - fullchain.cer  
+            - *.$domain.cer  
+            - *.$domain.conf  
+            - *.$domain.csr  
+            - *.$domain.csr.conf  
+            - *.$domain.key
+            ```
+    * ~~-g 自动生成https证书（仅支持acme.sh获取的免费时限证书）~~
+        ~~* 需要提供以下环境变量~~
+            ~~* `CF_Token`~~
+            ~~* `CF_Account_ID`~~
+            ~~* `CF_Zone_ID`~~
+            ~~* `SSL_EMAIL` ssl证书的邮箱账号~~
+        ~~* 使用cloudflare，如有其他需求，请自行修改`all-in-one.sh`~~
+    * -u 自动更新https（仅支持acme.sh获取的免费时限证书），且只支持`cloudflare`
         * 需要提供以下环境变量
             * `CF_Token`
             * `CF_Account_ID`
