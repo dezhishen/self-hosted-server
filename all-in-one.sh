@@ -112,15 +112,16 @@ funStopContainer(){
 }
 
 # 创建根目录
+echo "正在创建根目录 $base_data_dir"
 if [ ! -d $base_data_dir ];then
     mkdir $base_data_dir
 else
-    echo "文件夹已存在，是否需要备份:y/n"
+    echo "文件夹[$base_data_dir]已存在，是否需要备份:y/n"
     read flag
     if [ "$flag" = "y" ];then
         foldername=$(date +%Y%m%d%H%M%S)
         cp -r $base_data_dir $base_data_dir.bak.$foldername
-        echo "已备份到:$base_data_dir.bak.$foldername"
+        echo "已备份到:[ $base_data_dir.bak.$foldername ]"
     fi
 fi
 
@@ -247,6 +248,37 @@ if [ "$flag" = "y" ];then
     echo "完成启动容器 webssh2"
     echo "访问路径: webssh2.$domain"
 fi
+
+# navidrome
+
+echo "是否安装/重装 navidrome: y/n"
+read flag
+if [ "$flag" = "y" ];then
+    echo "复制nginx需要的配置文件"
+    if [ $ssl -eq 1 ]; then
+        cp -f ./conf.d.https/navidrome.conf $base_data_dir/nginx/conf/conf.d/navidrome.conf
+    else
+        cp -f ./conf.d/navidrome.conf $base_data_dir/nginx/conf/conf.d/navidrome.conf
+    fi
+    funCreateDir $base_data_dir/navidrome
+    funCreateDir $base_data_dir/navidrome/data
+    funCreateDir $base_data_dir/public/
+    funCreateDir $base_data_dir/public/music
+    funStopContainer navidrome 
+    echo "开始启动容器 navidrome"
+    docker run -d --name navidrome \
+    --network=ingress --network-alias=navidrome \
+    --user $(id -u):$(id -g) \
+    -e ND_LOGLEVEL=info \
+    -e LANG="zh_CN.UTF-8" \
+    -e TZ="Asia/Shanghai" \
+    -v $base_data_dir/public/music:/music \
+    -v $base_data_dir/navidrome/data:/data/ \
+    deluan/navidrome:latest
+    echo "完成启动容器 navidrome"
+    echo "访问路径: navidrome.$domain"
+fi
+
 
 # vaultwarden
 echo "是否安装/重装 vaultwarden: y/n"
@@ -397,6 +429,4 @@ else
         docker restart nginx
     fi
 fi
-
-
 echo "安装完成，即将退出"
