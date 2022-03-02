@@ -25,6 +25,7 @@
 [aliyundrive-webdav](https://github.com/messense/aliyundrive-webdav)|阿里云盘 WebDAV 服务(rust)|-|aliyundrive-webdav.$domain
 [webssh2]|web端的ssh，无ipv6的外部环境需要ssh调试ipv6的宿主机时使用|-|webssh2.$domain
 [samba](https://github.com/dperson/samba)|smb|139:139 445:445|宿主机ip/www<br>或者运行命令行查看<br><pre>echo "\`hostname -I \| cut -d ' ' -f 1\`/www"</pre><br>账号和密码在安装时指定
+[acme](https://github.com/acmesh-official/acme.sh)|https自动续期的容器|-|-
 
 
 
@@ -70,7 +71,11 @@
             * `CF_Zone_ID`
             * `SSL_EMAIL` ssl证书的邮箱账号
         * 使用cloudflare，如有其他需求，请自行修改`all-in-one.sh`
+## todo
+- [x] 收集和编写脚本
+- [ ] 拆分`all-in-one.sh`的内容到其他脚本中
+- [ ] 在当前会话中记录已输入的数据?
 
 ## 注意事项
-* 切勿使用已存在的文件夹，或提前备份自己的文件夹
+* 避免使用已存在的文件夹，或备份自己的文件夹
 * windows下`portainer`容器需要根据[https://docs.portainer.io/v/ce-2.9/start/install/server/docker/wcs](https://docs.portainer.io/v/ce-2.9/start/install/server/docker/wcs)进行修改
