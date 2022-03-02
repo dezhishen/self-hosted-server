@@ -341,8 +341,8 @@ if [ "$flag" = "y" ];then
             -e "TZ=Asia/Shanghai" \
             -e RPC_PORT=6800 \
             -e LISTEN_PORT=6888 \
-            -e PUID=`id -u` \
-            -d PGID=`id -g` \
+            -e PUID="`id -u`" \
+            -d PGID="`id -g`" \
             -v $base_data_dir/aria2:/config \
             -v $base_data_dir/public/downloads:/downloads \
         p3terx/aria2-pro
