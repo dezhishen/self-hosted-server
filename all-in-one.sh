@@ -347,7 +347,7 @@ if [ "$flag" = "y" ];then
             -v /docker_data/public/:/public \
         p3terx/aria2-pro
 
-        sleep 5
+        sleep 10
         
         echo "修改aria2默认下载路径"
         sed -i `echo "s/dir=\\/downloads/dir=\\/public\\/downloads/g"` $base_data_dir/aria2/aria2.conf
