@@ -424,7 +424,7 @@ if [ "$flag" = "y" ];then
     -e TZ="Asia/Shanghai" \
     -e LANG="zh_CN.UTF-8" \
     -e SHARE="www;/mount/;yes;no;no;all;none" \
-    -e USER="`echo $samba_username `:`echo $samba_password `" \
+    -e USER="`echo $samba_username `;`echo $samba_password `" \
     -e USERID="`id -u`" \
     -e GROUPID="`id -g`" \
     dperson/samba
