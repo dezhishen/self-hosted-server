@@ -348,10 +348,15 @@ if [ "$flag" = "y" ];then
         p3terx/aria2-pro
         
         echo "修改aria2默认下载路径"
-        
-        sed -i `echo "s/dir=\/downloads/dir=\public/downloads/g"` $base_data_dir/aria2/aria2.conf
-        sed -i "s#/downloads#/public/downloads#g" $base_data_dir/aria2/aria2.conf
+        sed -i `echo "s/dir=\\/downloads/dir=\\/public\\/downloads/g"` $base_data_dir/aria2/aria2.conf
+        cat <<-EOF
+        当前下载路径为:
+        ...
+        `cat $base_data_dir/aria2/aria2.conf | grep dir=`
+        ...
+EOF 
         docker restart aria2
+
         echo "完成启动容器 aria2"
         echo "rpc路径: aria2-rpc.$domain/jsonrpc"
         echo "密钥: $ARIA2_RPC_SECRET"
