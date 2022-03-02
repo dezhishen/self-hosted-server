@@ -128,13 +128,13 @@ if [ "$flag" = "y" ];then
     fi
     funCreateDir $base_data_dir/filebrowser
     funStopContainer filebrowser 
-    if [ ! -f $base_data_dir/filebrowser/filebrowser.db];then
+    if [ ! -f $base_data_dir/filebrowser/filebrowser.db ];then
         echo "配置文件[filebrowser.db]不存在，创建"
         cp  -f ./filebrowser/filebrowser.db $base_data_dir/filebrowser/filebrowser.db 
     else
-        echo "配置文件已存在，跳过"
+        echo "配置文件[filebrowser.db]已存在，跳过"
     fi
-    if [ ! -f $base_data_dir/filebrowser/filebrowser.json];then
+    if [ ! -f $base_data_dir/filebrowser/filebrowser.json ];then
         echo "配置文件[filebrowser.json]不存在，创建"
         cp  -f ./filebrowser/filebrowser.json $base_data_dir/filebrowser/filebrowser.json
     else
