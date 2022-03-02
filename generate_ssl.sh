@@ -1,46 +1,19 @@
 #/bin/bash
-
-while getopts p:d:sug OPTION;do
-    case $OPTION in
-    p)
-        base_data_dir=$OPTARG
-        ;;
-    d)
-        domain=$OPTARG
-        ;;
-    s)
-        ssl=1
-        ;;
-    u)
-        autossl=1
-        ;;
-    g)
-        generatessl=1
-        ;;
-    ?)
-        echo "get a non option $OPTARG and OPTION is $OPTION"
-        exit 1;;
-    esac
-done
-
 if [ ! -n "$domain" ]; then  
-    domain="self.docker.com"
+    echo "请输入域名"
+    read domain
+    if [ ! -n "$domain" ]; then  
+        echo "必须输入域名！！"
+        exit 1
+    fi
 fi
 
 if [ ! -n "$base_data_dir" ]; then  
-    base_data_dir="/docker_data"
-fi
-
-if [ ! -n "$generatessl" ]; then  
-    generatessl=0
-fi
-
-if [ ! -n "$ssl" ]; then  
-    ssl=0
-fi
-
-if [ ! -n "$autossl" ]; then  
-    autossl=0
+    echo "请输入docker卷使用的根目录,默认为/docker_data"
+    read base_data_dir
+    if [ ! -n "$base_data_dir" ]; then  
+        base_data_dir="/docker_data"
+    fi
 fi
 
 echo "路径:$base_data_dir" 
@@ -58,36 +31,42 @@ funStopContainer(){
     docker ps -a -q --filter "name=$name" | grep -q . && docker rm -fv $name
 }
 
-#CF_Account_ID=CF_Account_ID
-#CF_Token=CF_Token
-#CF_Zone_ID=CF_Zone_ID
-#SSL_EMAIL=SSL_EMAIL
-
 funCreateDir $base_data_dir/acmeout
 
-if [ ! -n "$CF_Token" ]; then  
-    echo "请输入CF_Token:"
-    read CF_Token
-fi
+echo "请选择服务商:"
+echo "1.Cloudflare: dns_cf"
+read DNS_TYPE
+case $DNS_TYPE in
+"dns_cf")
+    if [ ! -n "$CF_Token" ]; then  
+        echo "请输入CF_Token:"
+        read CF_Token
+    fi
+    if [ ! -n "$CF_Account_ID" ]; then  
+        echo "请输入CF_Account_ID:"
+        read CF_Account_ID
+    fi
 
-if [ ! -n "$CF_Account_ID" ]; then  
-    echo "请输入CF_Account_ID:"
-    read CF_Account_ID
-fi
+    if [ ! -n "$CF_Zone_ID" ]; then  
+        echo "请输入CF_Zone_ID:"
+        read CF_Zone_ID
+    fi
 
-if [ ! -n "$CF_Zone_ID" ]; then  
-    echo "请输入CF_Zone_ID:"
-    read CF_Zone_ID
-fi
+    if [ ! -n "$SSL_EMAIL" ]; then  
+        echo "请输入ssl的邮箱:"
+        read SSL_EMAIL
+    fi
+    docker run -it --rm \
+        -e CF_Token=`echo $CF_Token` \
+        -e CF_Account_ID=`echo $CF_Account_ID` \
+        -e CF_Zone_ID=`echo $CF_Zone_ID` \
+        -v $base_data_dir/acmeout:/acme.sh \
+        neilpang/acme.sh --issue -d *.$domain --dns `echo $DNS_TYPE` -m `echo $SSL_EMAIL` || exit 1
+    ;;
+"")
+*)
+    echo "不支持的类型"
+    exit 1
+    ;;
+esac
 
-if [ ! -n "$SSL_EMAIL" ]; then  
-    echo "请输入ssl的邮箱:"
-    read SSL_EMAIL
-fi
-
-docker run -it --rm \
-    -e CF_Token=`echo $CF_Token` \
-    -e CF_Account_ID=`echo $CF_Account_ID` \
-    -e CF_Zone_ID=`echo $CF_Zone_ID` \
-    -v $base_data_dir/acmeout:/acme.sh \
-    neilpang/acme.sh --issue -d *.$domain --dns dns_cf -m `echo $SSL_EMAIL` || exit 1
