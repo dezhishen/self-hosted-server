@@ -72,19 +72,20 @@ if [ ! -n "$autossl" ]; then
         autossl=0
     fi
 fi
+echo "配置信息如下"
+echo ""
+echo ""
+printf "%s:\t%s\n%s:\t%s\n%s:\t%s\n%s:\t%s\n%s:\t%s\n" \
+路径 $base_data_dir \
+域名 $domain \
+启用ssl $ssl \
+生成ssl证书 $generatessl \
+自动更新ssl证书  $autossl | column -t
 
-printf "
-配置信息如下:
-路径:\t$base_data_dir 
-域名:\t$domain 
-启用ssl:\t$ssl 
-生成ssl证书:\t$generatessl 
-自动更新ssl证书:\t$autossl 
-
-开始进入安装程序。。。
-
+echo ""
+echo ""
+printf "开始进入安装程序。。。
 注意:如无特殊说明重装不会影响数据持久化，如担心风险请在备份环节中选择数据备份 
-
 "
 
 echo "是否继续安装 y/n"
@@ -119,7 +120,7 @@ else
     if [ "$flag" = "y" ];then
         foldername=$(date +%Y%m%d%H%M%S)
         cp -r $base_data_dir $base_data_dir.bak.$foldername
-        echo "已备份到:$dir.bak.$foldername"
+        echo "已备份到:$base_data_dir.bak.$foldername"
     fi
 fi
 
@@ -223,6 +224,7 @@ if [ "$flag" = "y" ];then
 fi
 
 # webssh
+echo "webssh 目前arm不兼容兼容，arm不建议安装"
 echo "是否安装/重装 webssh y/n"
 read flag
 if [ "$flag" = "y" ];then
