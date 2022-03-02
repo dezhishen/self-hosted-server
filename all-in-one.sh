@@ -345,22 +345,8 @@ if [ "$flag" = "y" ];then
             -e LISTEN_PORT=6888 \
             -v /docker_data/aria2:/config \
             -v /docker_data/public/:/public \
+            -v /docker_data/public/downloads:/downloads \
         p3terx/aria2-pro
-
-        while [ ! -f $base_data_dir/aria2/aria2.conf ]; do
-            echo "等待aria2启动"
-            sleep 1
-        done
-        
-        echo "修改aria2默认下载路径"
-        sed -i `echo "s/dir=\\/downloads/dir=\\/public\\/downloads/g"` $base_data_dir/aria2/aria2.conf
-        printf "
-        当前下载路径为:
-        ...
-        `cat $base_data_dir/aria2/aria2.conf | grep dir=`
-        ...
-        "
-        docker restart aria2
 
         echo "完成启动容器 aria2"
         echo "rpc路径: aria2-rpc.$domain/jsonrpc"
