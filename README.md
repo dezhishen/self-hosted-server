@@ -5,7 +5,7 @@
 服务名称|描述|端口|访问地址
 -|-|-|-
 portainer|容器管理界面|-|portainer.$domain
-adguardhome|私人dns|53/udp|adguardhome.$domain
+adguardhome|私人dns|53/udp| adguardhome-init.$domain（初始化地址） / adguardhome.$domain（初始化时，修改管理界面端口为80，则通过该地址访问）
 filebrowser|文件管理|-|filebrowser.$domain
 nginx|反向代理|80；443|$domain
 

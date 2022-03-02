@@ -132,7 +132,7 @@ if [ "$flag" = "y" ];then
     --network=ingress --network-alias=adguardhome \
     -v $base_data_dir/adguardhome/work:/opt/adguardhome/work \
     -v $base_data_dir/adguardhome/conf:/opt/adguardhome/conf \
-    adguard/adguardhome -p 80
+    adguard/adguardhome
 fi
 # webssh
 
