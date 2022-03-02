@@ -231,7 +231,7 @@ if [ "$flag" = "y" ];then
     echo "开始启动容器 webssh2"
     docker run --name webssh2 -d -v $base_data_dir/webssh2/config.json:/usr/src/config.json --network=ingress --network-alias=webssh2  psharkey/webssh2
     echo "完成启动容器 webssh2"
-    echo "访问路径: webssh2-init.$domain"
+    echo "访问路径: webssh2.$domain"
 fi
 
 # aria2
