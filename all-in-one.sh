@@ -336,12 +336,13 @@ if [ "$flag" = "y" ];then
         echo "开始启动容器 aria2"
         docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m \
             --network=ingress --network-alias=aria2 \
-            -u $(id -u):$(id -g) \
             -e UMASK_SET=022 \
             -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
             -e "TZ=Asia/Shanghai" \
             -e RPC_PORT=6800 \
             -e LISTEN_PORT=6888 \
+            -e PUID=`id -u` \
+            -d PGID=`id -g` \
             -v $base_data_dir/aria2:/config \
             -v $base_data_dir/public/downloads:/downloads \
         p3terx/aria2-pro
