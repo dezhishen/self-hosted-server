@@ -334,7 +334,7 @@ if [ "$flag" = "y" ];then
         fi
         funStopContainer aria2 
         echo "开始启动容器 aria2"
-        docker run --name aria2-pro -d \
+        docker run --name aria2 -d \
             --restart unless-stopped \
             --log-opt max-size=1m \
             --network ingress --network-alias=aria2 \
