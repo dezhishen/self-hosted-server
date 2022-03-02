@@ -427,6 +427,7 @@ if [ "$flag" = "y" ];then
     -e USER="`echo $samba_username `;`echo $samba_password `" \
     -e USERID="`id -u`" \
     -e GROUPID="`id -g`" \
+    -v $base_data_dir/public/:/mount \
     dperson/samba
     echo "完成启动容器 samba"
     echo "访问路径: `hostname -I | cut -d ' ' -f 1`/www"
