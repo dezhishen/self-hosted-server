@@ -27,7 +27,24 @@
 [samba](https://github.com/dperson/samba)|smb|139:139 445:445|宿主机ip/www<br>或者运行命令行查看<br><pre>echo "\`hostname -I \| cut -d ' ' -f 1\`/www"</pre><br>账号和密码在安装时指定
 [acme](https://github.com/acmesh-official/acme.sh)|https自动续期的容器|-|-
 
+## 根目录下文件夹布局
+```
+- $base_data_dir
+    - A应用文件夹(同容器名)
+        ...
+    - public
+        - downloads
+        - music
+        - videos 
+        ...
+            其他公共文件夹
+        ...
 
+        ...
+    - Z应用文件夹(同容器名)
+        ...
+
+```
 
 ## 步骤
 * 安装docker
