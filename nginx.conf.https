@@ -21,6 +21,11 @@ http {
     #tcp_nopush     on;
     keepalive_timeout  65;
 
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        '' close;
+    }
+
     gzip  on;
 
     server {

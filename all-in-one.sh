@@ -227,6 +227,46 @@ fi
 #     echo "访问路径: webssh2-init.$domain"
 # fi
 
+# aria2
+
+echo "是否安装/重装 aria2 y/n"
+read flag
+if [ "$flag" = "y" ];then
+    echo "复制nginx需要的配置文件"
+    if [ $ssl -eq 1 ]; then
+        cp -f ./conf.d.https/aria2.conf $base_data_dir/nginx/conf/conf.d/aria2.conf
+    else
+        cp -f ./conf.d/aria2.conf $base_data_dir/nginx/conf/conf.d/aria2.conf
+    fi
+    
+    funCreateDir $base_data_dir/aria2
+    funCreateDir $base_data_dir/public
+    funCreateDir $base_data_dir/public/downloads
+    if [ ! -n "$ARIA2_RPC_SECRET" ];then
+        echo "请输入RPC密钥"
+        read ARIA2_RPC_SECRET
+        if [ ! -n "$ARIA2_RPC_SECRET" ];then
+            ARIA2_RPC_SECRET=`date +%s | sha256sum | base64 | head -c 32 ; echo`
+            echo "使用随机密钥 $ARIA2_RPC_SECRET"
+        fi
+        funStopContainer aria2 
+        echo "开始启动容器 aria2"
+        docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m \
+            --network=ingress --network-alias=aria2 \
+            -e UMASK_SET=022 \
+            -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
+            -e "TZ=Asia/Shanghai" \
+            -e RPC_PORT=6800 \
+            -e LISTEN_PORT=6888 \
+            -v $base_data_dir/aria2:/config \
+            -v $base_data_dir/public/downloads:/downloads \
+        p3terx/aria2-pro
+        echo "完成启动容器 aria2"
+        echo "rpc路径: aria2-rpc.$domain/jsonrpc"
+        echo "密钥: $ARIA2_RPC_SECRET"
+    fi
+fi
+
 
 # nginx
 echo "是否安装/重装 nginx y/n"
@@ -303,5 +343,13 @@ if [ "$flag" = "y" ];then
         --network=ingress --network-alias=ingress \
         nginx
     fi
+else
+    echo "是否重启nginx: y/n"
+    read flag
+    if [ "$flag" = "y" ];then
+        docker restart nginx
+    fi
 fi
+
+
 echo "安装完成，即将退出"
