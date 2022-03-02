@@ -1,4 +1,5 @@
 # /bin/bash
+
 while getopts p:d:sugh OPTION; do
     case $OPTION in
     p)
@@ -71,13 +72,26 @@ if [ ! -n "$autossl" ]; then
         autossl=0
     fi
 fi
-echo "路径:$base_data_dir" 
-echo "域名:$domain" 
-echo "是否启用ssl:$ssl" 
-echo "是否生成ssl证书:$generatessl" 
-echo "是否自动更新ssl证书:$autossl" 
-echo "开始进入安装程序。。。"
-echo "注意：重装不会影响应用内部的存储和配置，只会重置外部映射，如反向代理的域名等。。"
+
+printf "
+配置信息如下:
+路径:\t$base_data_dir 
+域名:\t$domain 
+启用ssl:\t$ssl 
+生成ssl证书:\t$generatessl 
+自动更新ssl证书:\t$autossl 
+
+开始进入安装程序。。。
+
+注意:如无特殊说明重装不会影响数据持久化，如担心风险请在备份环节中选择数据备份 
+
+"
+
+echo "是否继续安装 y/n"
+read flag
+if [ ! "$flag" = "y" ];then
+    exit 1
+fi
 
 
 funCreateDir(){
@@ -208,9 +222,7 @@ if [ "$flag" = "y" ];then
     echo "配置完成后访问路径: adguardhome.$domain"
 fi
 
-
 # webssh
-
 echo "是否安装/重装 webssh y/n"
 read flag
 if [ "$flag" = "y" ];then
@@ -232,6 +244,28 @@ if [ "$flag" = "y" ];then
     docker run --name webssh2 -d -v $base_data_dir/webssh2/config.json:/usr/src/config.json --network=ingress --network-alias=webssh2  psharkey/webssh2
     echo "完成启动容器 webssh2"
     echo "访问路径: webssh2.$domain"
+fi
+
+# vaultwarden
+echo "是否安装/重装 vaultwarden: y/n"
+read flag
+if [ "$flag" = "y" ];then
+    echo "复制nginx需要的配置文件"
+    if [ $ssl -eq 1 ]; then
+        cp -f ./conf.d.https/vaultwarden.conf $base_data_dir/nginx/conf/conf.d/vaultwarden.conf
+    else
+        cp -f ./conf.d/vaultwarden.conf $base_data_dir/nginx/conf/conf.d/vaultwarden.conf
+    fi
+    funCreateDir $base_data_dir/vaultwarden
+    funCreateDir $base_data_dir/vaultwarden/data
+    funStopContainer vaultwarden 
+    echo "开始启动容器 vaultwarden"
+    docker run -d --name vaultwarden \
+    --network=ingress --network-alias=vaultwarden \
+    -v $base_data_dir/vaultwarden/data:/data/  \
+    vaultwarden/server:latest
+    echo "完成启动容器 vaultwarden"
+    echo "访问路径: vaultwarden.$domain"
 fi
 
 # aria2
