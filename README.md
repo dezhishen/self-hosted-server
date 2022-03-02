@@ -24,7 +24,7 @@
 [navidrome](https://github.com/navidrome/navidrome)|音乐服务(适配`Subsonic/Airsonic`)|-|navidrome.$domamin
 [aliyundrive-webdav](https://github.com/messense/aliyundrive-webdav)|阿里云盘 WebDAV 服务(rust)|-|aliyundrive-webdav.$domain
 [webssh2]|web端的ssh，无ipv6的外部环境需要ssh调试ipv6的宿主机时使用|-|webssh2.$domain
-[samba](https://github.com/dperson/samba)|smb|139:139 445:445|宿主机ip/www<br>或者运行命令行查看<br><pre>echo "\`hostname -I \| cut -d ' ' -f 1\`/www"</pre>账号和密码在安装时指定
+[samba](https://github.com/dperson/samba)|smb|139;445|宿主机ip/www<br>或者运行命令行查看<pre>echo "\`hostname -I \| cut -d ' ' -f 1\`/www"</pre>账号和密码在安装时指定
 [acme](https://github.com/acmesh-official/acme.sh)|https自动续期的容器|-|-
 
 ## 根目录下文件夹布局
