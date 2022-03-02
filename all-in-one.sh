@@ -354,6 +354,10 @@ else
     echo "是否重启nginx: y/n"
     read flag
     if [ "$flag" = "y" ];then
+        echo "根据域名修改配置文件"
+        sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/nginx.conf
+        sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/conf.d/*.conf
+        echo "修改完毕"
         docker restart nginx
     fi
 fi
