@@ -187,6 +187,7 @@ if [ "$flag" = "y" ];then
     
     echo "开始启动容器 portainer"
     docker run -d --restart=always --name=portainer \
+    -u $(id -u):$(id -g) \
     -e TZ="Asia/Shanghai" \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $base_data_dir/portainer/data:/data \
@@ -213,6 +214,7 @@ if [ "$flag" = "y" ];then
     
     echo "开始启动容器 adguardhome"
     docker run -d --restart=always --name=adguardhome \
+    -u $(id -u):$(id -g) \
     -p 53:53 \
     -e TZ="Asia/Shanghai" \
     --network=ingress --network-alias=adguardhome \
@@ -244,7 +246,12 @@ if [ "$flag" = "y" ];then
     fi
     funStopContainer webssh2 
     echo "开始启动容器 webssh2"
-    docker run --name webssh2 -d -v $base_data_dir/webssh2/config.json:/usr/src/config.json --network=ingress --network-alias=webssh2  psharkey/webssh2
+    docker run --name webssh2 -d \
+    --restart=always \
+    -v $base_data_dir/webssh2/config.json:/usr/src/config.json \
+    --network=ingress --network-alias=webssh2  \
+    -u $(id -u):$(id -g) \
+    psharkey/webssh2
     echo "完成启动容器 webssh2"
     echo "访问路径: webssh2.$domain"
 fi
@@ -295,6 +302,7 @@ if [ "$flag" = "y" ];then
     funStopContainer vaultwarden 
     echo "开始启动容器 vaultwarden"
     docker run -d --name vaultwarden \
+    -u $(id -u):$(id -g) \
     --network=ingress --network-alias=vaultwarden \
     -v $base_data_dir/vaultwarden/data:/data/  \
     vaultwarden/server:latest
@@ -328,6 +336,7 @@ if [ "$flag" = "y" ];then
         echo "开始启动容器 aria2"
         docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m \
             --network=ingress --network-alias=aria2 \
+            -u $(id -u):$(id -g) \
             -e UMASK_SET=022 \
             -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
             -e "TZ=Asia/Shanghai" \
@@ -366,6 +375,7 @@ if [ "$flag" = "y" ];then
     funStopContainer nginx
     if [ $ssl -eq 1 ] ; then
         docker run -d --restart=always --name=nginx \
+            -u $(id -u):$(id -g) \
             -v $base_data_dir/acmeout/*.$domain:/etc/nginx/ssl/ \
             -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
             -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
@@ -394,6 +404,7 @@ if [ "$flag" = "y" ];then
             fi
             funStopContainer acme
             docker run --name=acme --restart=always -d \
+                -u $(id -u):$(id -g) \
                 -e CF_Token=`echo $CF_Token`\
                 -e CF_Account_ID=`echo $CF_Account_ID` \
                 -e CF_Zone_ID=`echo $CF_Zone_ID` \
@@ -411,6 +422,7 @@ if [ "$flag" = "y" ];then
     else
         echo "启动nginx..."
         docker run -d --restart=always --name=nginx \
+        -u $(id -u):$(id -g) \
         -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
         -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
         -p 80:80 -p 443:443 \
