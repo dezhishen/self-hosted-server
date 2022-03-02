@@ -309,6 +309,51 @@ if [ "$flag" = "y" ];then
     echo "完成启动容器 vaultwarden"
     echo "访问路径: vaultwarden.$domain"
 fi
+# aliyundrive-webdav
+echo "是否安装/重装 aliyundrive-webdav: y/n"
+read flag
+if [ "$flag" = "y" ];then
+    echo "复制nginx需要的配置文件"
+    if [ $ssl -eq 1 ]; then
+        cp -f ./conf.d.https/aliyundrive-webdav.conf $base_data_dir/nginx/conf/conf.d/aliyundrive-webdav.conf
+    else
+        cp -f ./conf.d/aliyundrive-webdav.conf $base_data_dir/nginx/conf/conf.d/aliyundrive-webdav.conf
+    fi
+    funCreateDir $base_data_dir/aliyundrive-webdav
+    funStopContainer aliyundrive-webdav
+    echo "请输入阿里云RefreshToken"
+    read aliyun_refresh_token
+    if [ -z "$aliyun_refresh_token" ];then
+        echo "RefreshToken不能为空"
+        exit 1
+    fi
+    echo "请输入用户名"
+    read aliyun_username
+    if [ -z "$aliyun_username" ];then
+        aliyun_username="admin"
+    fi
+    echo "请输入$aliyun_username的密码"
+    read aliyun_admin_password
+    if [ -z "$aliyun_admin_password" ];then
+        echo "admin的密码为空，生成随机密码"
+        aliyun_admin_password=`date +%s | md5sum | head -c 8`
+        echo "admin的密码为: $aliyun_admin_password"
+    fi
+
+    echo "开始启动容器 aliyundrive-webdav"
+    docker run --name=aliyundrive-webdav --restart=always -d \
+        --network=ingress --network-alias=aliyundrive-webdav \
+        -e TZ="Asia/Shanghai" \
+        -e LANG="zh_CN.UTF-8" \
+        -u $(id -u):$(id -g) \
+        -e REFRESH_TOKEN="`echo $aliyun_refresh_token `" \
+        -e WEBDAV_AUTH_USER="`echo $aliyun_username `" \
+        -e WEBDAV_AUTH_PASSWORD="`echo $aliyun_admin_password `" \
+        -v $base_data_dir/aliyundrive-webdav/:/etc/aliyundrive-webdav \
+        messense/aliyundrive-webdav
+    echo "完成启动容器 aliyundrive-webdav"
+    echo "访问路径: aliyundrive-webdav.$domain"
+fi
 
 # aria2
 
@@ -343,9 +388,9 @@ if [ "$flag" = "y" ];then
             -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
             -e RPC_PORT=6800 \
             -e LISTEN_PORT=6888 \
-            -v /docker_data/aria2:/config \
-            -v /docker_data/public/:/public \
-            -v /docker_data/public/downloads:/downloads \
+            -v $base_data_dir/aria2:/config \
+            -v $base_data_dir/public/:/public \
+            -v $base_data_dir/public/downloads:/downloads \
         p3terx/aria2-pro
 
         echo "完成启动容器 aria2"
@@ -353,7 +398,39 @@ if [ "$flag" = "y" ];then
         echo "密钥: $ARIA2_RPC_SECRET"
     fi
 fi
-
+# samba
+echo "是否安装/重装 samba y/n"
+read flag
+if [ "$flag" = "y" ];then
+    echo "请输入用户名"
+    read samba_username
+    if [ -z "$samba_username" ];then
+        samba_username="admin"
+    fi
+    echo "请输入$samba_username的密码"
+    read samba_password
+    if [ -z "$samba_password" ];then
+        echo "$samba_username的密码为空，生成随机密码"
+        samba_password=`date +%s | md5sum | head -c 8`
+        echo "$samba_username的密码为: $samba_password"
+    fi
+    funCreateDir $base_data_dir/public
+    funStopContainer samba
+    echo "开始启动容器 samba"
+    docker run -d --name=samba \
+    --network=ingress --network-alias=samba \
+    -p 139:139 -p 445:445 \
+    -v $base_data_dir/public:/public \
+    -e TZ="Asia/Shanghai" \
+    -e LANG="zh_CN.UTF-8" \
+    -e SHARE="www;/mount/;yes;no;no;all;none" \
+    -e USER="`echo $samba_username `:`echo $samba_password `" \
+    -e USERID="`id -u`" \
+    -e GROUPID="`id -g`" \
+    dperson/samba
+    echo "完成启动容器 samba"
+    echo "访问路径: `hostname -I | cut -d ' ' -f 1`/www"
+fi
 
 # nginx
 echo "是否安装/重装 nginx y/n"
