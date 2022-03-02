@@ -344,8 +344,12 @@ if [ "$flag" = "y" ];then
             -e RPC_PORT=6800 \
             -e LISTEN_PORT=6888 \
             -v /docker_data/aria2:/config \
-            -v /docker_data/public/downloads:/downloads \
+            -v /docker_data/public/:/public \
         p3terx/aria2-pro
+        
+        echo "修改aria2默认下载路径"
+        sed -i "s#/downloads#/public/downloads#g" $base_data_dir/aria2/aria2.conf
+        docker restart aria2
         echo "完成启动容器 aria2"
         echo "rpc路径: aria2-rpc.$domain/jsonrpc"
         echo "密钥: $ARIA2_RPC_SECRET"
