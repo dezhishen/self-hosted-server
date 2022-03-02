@@ -340,7 +340,7 @@ if [ "$flag" = "y" ];then
             --network ingress --network-alias=aria2 \
             -e PUID=`id -u` \
             -e PGID=`id -g` \
-            -e RPC_SECRET=Sdz12346 \
+            -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
             -e RPC_PORT=6800 \
             -e LISTEN_PORT=6888 \
             -v /docker_data/aria2:/config \
