@@ -334,17 +334,17 @@ if [ "$flag" = "y" ];then
         fi
         funStopContainer aria2 
         echo "开始启动容器 aria2"
-        docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m \
-            --network=ingress --network-alias=aria2 \
-            -e UMASK_SET=022 \
-            -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
-            -e "TZ=Asia/Shanghai" \
+        docker run --name aria2-pro -d \
+            --restart unless-stopped \
+            --log-opt max-size=1m \
+            --network ingress --network-alias=aria2 \
+            -e PUID=`id -u` \
+            -e PGID=`id -g` \
+            -e RPC_SECRET=Sdz12346 \
             -e RPC_PORT=6800 \
             -e LISTEN_PORT=6888 \
-            -e PUID="`id -u`" \
-            -d PGID="`id -g`" \
-            -v $base_data_dir/aria2:/config \
-            -v $base_data_dir/public/downloads:/downloads \
+            -v /docker_data/aria2:/config \
+            -v /docker_data/public/downloads:/downloads \
         p3terx/aria2-pro
         echo "完成启动容器 aria2"
         echo "rpc路径: aria2-rpc.$domain/jsonrpc"
