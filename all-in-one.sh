@@ -215,7 +215,7 @@ if [ "$flag" = "y" ];then
     echo "开始启动容器 adguardhome"
     docker run -d --restart=always --name=adguardhome \
     -u $(id -u):$(id -g) \
-    -p 53:53 \
+    -p 53:53/udp -p 53:53/tcp \
     -e TZ="Asia/Shanghai" \
     --network=ingress --network-alias=adguardhome \
     -v $base_data_dir/adguardhome/work:/opt/adguardhome/work \
