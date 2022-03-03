@@ -39,7 +39,7 @@ while getopts p:d:sugh OPTION; do
         echo "$ARGS_TIPS"
         exit 1;;
     ?)
-        printf $ARGS_ERROR $OPTARG $OPTION
+        printf "$ARGS_ERROR" "$OPTARG" "$OPTION"
         exit 1;;
     esac
 done
@@ -47,7 +47,7 @@ done
 if [ ! -n "$domain" ]; then 
     domain=`sh ./scripts/read-args-with-history.sh domain "$DOMAIN_LANG"`
     if [ ! -n "$domain" ]; then  
-        printf $INPUT_TIPS $DOMAIN_LANG
+        printf "$INPUT_TIPS" "$DOMAIN_LANG"
         read domain
         if [ ! -n "$domain" ]; then  
             domain="self.docker.com"
@@ -58,7 +58,7 @@ fi
 if [ ! -n "$base_data_dir" ]; then  
     base_data_dir=$(sh ./scripts/read-args-with-history.sh base_data_dir "$BASE_DATA_DIR_LANG")
     if [ ! -n "$base_data_dir" ];then
-        printf $INPUT_TIPS $BASE_DATA_DIR_LANG
+        printf "$INPUT_TIPS" "$BASE_DATA_DIR_LANG"
         read base_data_dir
         if [ ! -n "$base_data_dir" ]; then  
             base_data_dir="/docker_data"
@@ -71,7 +71,7 @@ if [ ! -n "$ssl" ]; then
     prompt=`printf " $ENABLE_TIPS " https`
     ssl=$(sh ./scripts/read-args-with-history.sh ssl "$prompt")
     if [ ! -n "$ssl" ]; then
-        printf $prompt
+        echo $prompt
         read yn
         case $yn in
             [Yy]* )
@@ -91,7 +91,7 @@ fi
 if [ ! -n "$generatessl" ]; then  
     generatessl=$(sh ./scripts/read-args-with-history.sh generatessl " $GENERATE_TIPS ")
     if [ ! -n "$generatessl" ]; then
-        printf $GENERATE_TIPS
+        printf "$GENERATE_TIPS"
         read yn
         case $yn in
             [Yy]* )
@@ -109,9 +109,9 @@ if [ ! -n "$generatessl" ]; then
 fi
 
 if [ ! -n "$autossl" ]; then  
-    autossl=$(sh ./scripts/read-args-with-history.sh autossl " `printf $ENABLE_TIPS $UPDATE_SSL_CERT_LANG` ")
+    autossl=$(sh ./scripts/read-args-with-history.sh autossl " `printf "$ENABLE_TIPS" "$UPDATE_SSL_CERT_LANG"` ")
     if [ ! -n "$autossl" ]; then
-        printf $ENABLE_TIPS $UPDATE_SSL_CERT_LANG
+        printf "$ENABLE_TIPS" "$UPDATE_SSL_CERT_LANG"
         read yn
         case $yn in
             [Yy]* )
@@ -154,7 +154,7 @@ echo $CREATE_BASE_DATA_DIR_LANG
 
 if [ ! -d $base_data_dir ]; then
     mkdir -p $base_data_dir
-    printf $CREATE_BASE_DATA_DIR_SUCCESS_LANG $base_data_dir
+    printf "$CREATE_BASE_DATA_DIR_SUCCESS_LANG" "$base_data_dir"
 else
     # do you want to backup old data dir?
     echo $IF_BACKUP_LANG
@@ -163,7 +163,7 @@ else
         [Yy]* )
             backup_dir=$base_data_dir.bak.$(date +%Y%m%d%H%M%S)
             cp -r $base_data_dir $backup_dir
-            printf $BACKUP_SUCCESS_LANG $base_data_dir $backup_dir
+            printf "$BACKUP_SUCCESS_LANG" "$base_data_dir $backup_dir"
             ;;
         [Nn]* )
             ;;
@@ -189,7 +189,7 @@ esac
 ## input or choose your docker network name,default is ingrees
 docker_network_name=$(./scripts/read-args-with-history.sh docker_network_name "docker网络名称/docker network name")
 if [ ! -n "$docker_network_name" ]; then
-    printf $INPUT_TIPS "docker network name"
+    printf "$INPUT_TIPS" "docker network name"
     read docker_network_name
     if [ ! -n "$docker_network_name" ]; then
         docker_network_name="ingrees"
@@ -202,7 +202,7 @@ export docker_network_name=$docker_network_name
 sh ./scripts/create-docker-network.sh $docker_network_name || exit 1
 
 # insatll/reinstall portainer
-printf $INSTALL_TIPS portainer
+printf "$INSTALL_TIPS" portainer
 
 read yn
 case $yn in
@@ -213,7 +213,7 @@ case $yn in
 esac
 # install/reinstall filebrowser
 
-printf $INSTALL_TIPS filebrowser
+printf "$INSTALL_TIPS" filebrowser
 read yn
 case $yn in
     [Yy]* )
@@ -223,7 +223,7 @@ case $yn in
 esac
 # install/reinstall adguardhome
 
-printf $INSTALL_TIPS adguardhome
+printf "$INSTALL_TIPS" adguardhome
 read yn
 case $yn in
     [Yy]* )
@@ -245,7 +245,7 @@ case $yn in
 esac
 
 # install/reinstall navidrome
-printf $INSTALL_TIPS navidrome
+printf "$INSTALL_TIPS" navidrome
 read yn
 case $yn in
     [Yy]* )
@@ -259,7 +259,7 @@ esac
 case $ssl in
 [yY]*)
 
-    printf $INSTALL_TIPS vaultwarden
+    printf "$INSTALL_TIPS" vaultwarden
     read flag
     if [ "$flag" = "y" ];then
         ./scripts/install-vaultwarden.sh
@@ -272,7 +272,7 @@ esac
 
 # install/reinstall aria2
 
-printf $INSTALL_TIPS aria2
+printf "$INSTALL_TIPS" aria2
 read yn
 
 case $yn in
@@ -282,7 +282,7 @@ case $yn in
 esac
 
 # install/reinstall nginx
-printf $INSTALL_TIPS nginx 
+printf "$INSTALL_TIPS" nginx 
 read yn
 case $yn in
     [Yy]* )
