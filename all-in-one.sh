@@ -233,8 +233,9 @@ case $yn in
 esac
 
 # install/reinstall webssh2 with warning "webssh2 is not support on arm"
-printf $WEBSSH2_WARNING
-printf $INSTALL_TIPS webssh2
+printf "$WEBSSH2_WARNING"
+echo ""
+printf "$INSTALL_TIPS" webssh2
 
 read yn
 case $yn in
