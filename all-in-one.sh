@@ -68,9 +68,10 @@ if [ ! -n "$base_data_dir" ]; then
 fi
 
 if [ ! -n "$ssl" ]; then
-    ssl=$(sh ./scripts/read-args-with-history.sh ssl "`printf $ENABLE_TIPS https`")
+    prompt=`printf " $ENABLE_TIPS " https`
+    ssl=$(sh ./scripts/read-args-with-history.sh ssl "$prompt")
     if [ ! -n "$ssl" ]; then
-        printf $ENABLE_TIPS "https"
+        printf $prompt
         read yn
         case $yn in
             [Yy]* )
@@ -88,7 +89,7 @@ if [ ! -n "$ssl" ]; then
 fi
 
 if [ ! -n "$generatessl" ]; then  
-    generatessl=$(sh ./scripts/read-args-with-history.sh generatessl "$GENERATE_TIPS")
+    generatessl=$(sh ./scripts/read-args-with-history.sh generatessl " $GENERATE_TIPS ")
     if [ ! -n "$generatessl" ]; then
         printf $GENERATE_TIPS
         read yn
@@ -108,7 +109,7 @@ if [ ! -n "$generatessl" ]; then
 fi
 
 if [ ! -n "$autossl" ]; then  
-    autossl=$(sh ./scripts/read-args-with-history.sh autossl "`printf $ENABLE_TIPS $UPDATE_SSL_CERT_LANG`")
+    autossl=$(sh ./scripts/read-args-with-history.sh autossl " `printf $ENABLE_TIPS $UPDATE_SSL_CERT_LANG` ")
     if [ ! -n "$autossl" ]; then
         printf $ENABLE_TIPS $UPDATE_SSL_CERT_LANG
         read yn

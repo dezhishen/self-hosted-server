@@ -1,6 +1,5 @@
 # /bin/bash
-echo "复制nginx配置文件"
-echo "copy nginx config file"
+echo $COPY_NGINX_FILE_LANG
 case $ssl in
 [yY]* )
     http_scheme="https"
@@ -26,12 +25,10 @@ docker run -d --name vaultwarden \
 -v $base_data_dir/vaultwarden/data:/data/  \
 vaultwarden/server:latest
 
-echo "启动vaultwarden成功，vaultwarden 运行在 $http_scheme://vaultwarden.$domain"
-echo "star vaultwarden success，vaultwarden is running at $http_scheme://vaultwarden.$domain"
-
+printf "$START_SUCCESS_LANG,$PLEASE_VISIT_ADDRESS_LANG" "vaultwarden" "$http_scheme://vaultwarden.$domain"
+echo ""
 # install vaultwarden-backup    
-echo "是否安装vaultwarden-backup？"
-echo "do you want to install/reinstall vaultwarden-backup? [y/n]: "
+printf "$INSTALL_TIPS" "vaultwarden-backup"
 read yn
 case $yn in
 [Yy]* )
@@ -46,7 +43,7 @@ case $yn in
     --network=$docker_network_name --network-alias=vaultwarden-backup \
     -v $base_data_dir/vaultwarden-backup/data:/data/  \
     vaultwarden/backup:latest
-    echo "启动vaultwarden-backup成功，vaultwarden-backup 运行在 $http_scheme://vaultwarden-backup.$domain"
-    echo "star vaultwarden-backup success,vaultwarden-backup is running at $http_scheme://vaultwarden-backup.$domain"
+    printf "$START_SUCCESS_LANG" "vaultwarden"
+    echo ""
     ;;
 esac

@@ -1,6 +1,6 @@
 # /bin/bash
+echo $COPY_NGINX_FILE_LANG
 
-echo "复制nginx配置文件,copy config file to nginx"
 case $ssl in
 [yY]* )
     http_scheme="https"

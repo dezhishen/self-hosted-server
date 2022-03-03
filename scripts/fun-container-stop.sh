@@ -1,5 +1,5 @@
 # /bin/bash
 name=$1
-echo "停止并且删除容器[$name]"
-echo "stop and remove container[$name]"
+printf "$STOP_AND_REMOVE_CONTAINER_LANG" $name
+echo ""
 docker ps -a -q --filter "name=$name" | grep -q . && docker rm -fv $name
