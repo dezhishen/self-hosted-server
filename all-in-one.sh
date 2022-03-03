@@ -1,5 +1,6 @@
 # /bin/bash
-read -p "choose your language [zh/en]:" lang_set
+# read -p "choose your language [zh/en]:" lang_set
+lang_set="zh"
 case $lang_set in
     zh)
         echo "你选择了中文"
