@@ -8,13 +8,13 @@ while getopts p:d:sugh OPTION; do
         domain=$OPTARG
         ;;
     s)
-        ssl=1
+        ssl=y
         ;;
     u)
-        autossl=1
+        autossl=y
         ;;
     g)
-        generatessl=1
+        generatessl=y
         ;;
     h)
         echo "-d set domian -u enable auto update ssl cert -p set base data dir -s enable ssl -g generate ssl cert"
@@ -24,65 +24,83 @@ while getopts p:d:sugh OPTION; do
         exit 1;;
     esac
 done
-domain=$(sh ./scripts/read-args-with-history.sh domain)
+
 if [ ! -n "$domain" ]; then  
-    read -p "please input the domain of your home server:" domain
+    domain=$(./scripts/read-args-with-history.sh domain) 
     if [ ! -n "$domain" ]; then  
-        domain="self.docker.com"
+        read -p "please input the domain of your home server:" domain
+        if [ ! -n "$domain" ]; then  
+            domain="self.docker.com"
+        fi
+        ./scripts/set-args-to-history.sh domain $domain
     fi
 fi
-base_data_dir=$(sh ./scripts/read-args-with-history.sh base_data_dir)
 if [ ! -n "$base_data_dir" ]; then  
-    read -p "please input the base data dir of your home server,default is /data/data:" base_data_dir
-    read base_data_dir
-    if [ ! -n "$base_data_dir" ]; then  
-        base_data_dir="/docker_data"
+    base_data_dir=$(./scripts/read-args-with-history.sh base_data_dir)
+    if [ ! -n "$base_data_dir" ];then
+        read -p "please input the base data dir of your home server,default is /data/data:" base_data_dir
+        if [ ! -n "$base_data_dir" ]; then  
+            base_data_dir="/docker_data"
+        fi
+        ./scripts/set-args-to-history.sh base_data_dir $base_data_dir
     fi
 fi
-ssl=$(sh ./scripts/read-args-with-history.sh ssl)
+
 if [ ! -n "$ssl" ]; then
-    read -p "Do you want to enable ssl? [y/n]: " yn
-    case $yn in
-        [Yy]* )
-            ssl=1
-            ;;
-        [Nn]* )
-            ssl=0
-            ;;
-        * )
-            ssl=0
-            ;;
-    esac
+    ssl=$(./scripts/read-args-with-history.sh ssl)
+    if [ ! -n "$ssl" ]; then
+        read -p "Do you want to enable ssl? [y/n]: " yn
+        case $yn in
+            [Yy]* )
+                ssl=y
+                ;;
+            [Nn]* )
+                ssl=n
+                ;;
+            * )
+                ssl=n
+                ;;
+        esac
+        ./scripts/set-args-to-history.sh ssl $ssl
+    fi
 fi
-generatessl=$(sh ./scripts/read-args-with-history.sh generatessl)
+
 if [ ! -n "$generatessl" ]; then  
-    read -p "Do you want to generate ssl cert? [y/n]: " yn
-    case $yn in
-        [Yy]* )
-            generatessl=1
-            ;;
-        [Nn]* )
-            generatessl=0
-            ;;
-        * )
-            generatessl=0
-            ;;
-    esac
+    generatessl=$(./scripts/read-args-with-history.sh generatessl)
+    if [ ! -n "$generatessl" ]; then
+        read -p "Do you want to generate ssl cert? [y/n]: " yn
+        case $yn in
+            [Yy]* )
+                generatessl=y
+                ;;
+            [Nn]* )
+                generatessl=n
+                ;;
+            * )
+                generatessl=n
+                ;;
+        esac
+        ./scripts/set-args-to-history.sh generatessl $generatessl
+    fi
 fi
-autossl=$(sh ./scripts/read-args-with-history.sh autossl)
+
 if [ ! -n "$autossl" ]; then  
-    read -p "Do you want to enable auto update ssl cert? [y/n]: " yn
-    case $yn in
-        [Yy]* )
-            autossl=1
-            ;;
-        [Nn]* )
-            autossl=0
-            ;;
-        * )
-            autossl=0
-            ;;
-    esac
+    autossl=$(./scripts/read-args-with-history.sh autossl)
+    if [ ! -n "$autossl" ]; then
+        read -p "Do you want to enable auto update ssl cert? [y/n]: " yn
+        case $yn in
+            [Yy]* )
+                autossl=y
+                ;;
+            [Nn]* )
+                autossl=n
+                ;;
+            * )
+                autossl=n
+                ;;
+        esac
+        ./scripts/set-args-to-history.sh autossl $autossl
+    fi
 fi
 
 echo "the config of your home server is:"
@@ -100,6 +118,12 @@ case $yn in
     * )
         exit 1;;
 esac
+
+export domain=$domain
+export base_data_dir=$base_data_dir
+export ssl=$ssl
+export autossl=$autossl
+export generatessl=$generatessl
 
 # create base data dir if not exist
 echo "create base data dir if not exist"
@@ -127,20 +151,25 @@ fi
 
 # create docker network
 ## print docker network list
-echo "docker network ls"
-## input or choose your docker network name,default is ingree
-read -p "please input your docker network name,default is ingree:" docker_network_name
+## input or choose your docker network name,default is ingrees
+docker_network_name=$(./scripts/read-args-with-history.sh docker_network_name)
 if [ ! -n "$docker_network_name" ]; then
-    docker_network_name="ingree"
+    read -p "please input your docker network name,default is ingrees:" docker_network_name
+    if [ ! -n "$docker_network_name" ]; then
+        docker_network_name="ingrees"
+    fi
+    ./scripts/set-args-to-history.sh docker_network_name $docker_network_name
 fi
-sh creat_docker_network.sh $docker_network_name
+export docker_network_name=$docker_network_name
+
+./scripts/create-docker-network.sh $docker_network_name
 
 # insatll/reinstall portainer
-read -p "do you want to install/reinstall portainer? y/n" yn
+read -p "do you want to install/reinstall portainer ? [y/n]:" yn
 case $yn in
     [Yy]* )
         echo "installing portainer"
-        sh ./scripts/install-portainer.sh
+        eval ./scripts/install-portainer.sh
         ;;
     [Nn]* )
         echo "skip portainer"
@@ -150,12 +179,12 @@ case $yn in
         ;;
 esac
 # install/reinstall filebrowser
-read -p "do you want to install/reinstall filebrowser ? [y/n]" yn
+read -p "do you want to install/reinstall filebrowser ? [y/n]:" yn
 
 case $yn in
     [Yy]* )
         echo "installing filebrowser"
-        sh ./scripts/install-filebrowser.sh
+        ./scripts/install-filebrowser.sh
         ;;
     [Nn]* )
         echo "skip filebrowser"
@@ -165,11 +194,11 @@ case $yn in
         ;;
 esac
 # install/reinstall adguardhome
-read -p "do you want to install/reinstall adguardhome ? [y/n]" yn
+read -p "do you want to install/reinstall adguardhome ? [y/n]:" yn
 case $yn in
     [Yy]* )
         echo "installing adguardhome"
-        sh ./scripts/install-adguardhome.sh
+        ./scripts/install-adguardhome.sh
         ;;
     [Nn]* )
         echo "skip adguardhome"
@@ -180,12 +209,12 @@ case $yn in
 esac
 
 # install/reinstall webssh2 with warning "webssh2 is not support on arm"
-warning "webssh2 is not support on arm"
-read -p "do you want to install/reinstall webssh2 ? [y/n]" yn
+echo "[warning] webssh2 is not support on arm"
+read -p "do you want to install/reinstall webssh2 ? [y/n]:" yn
 case $yn in
     [Yy]* )
         echo "installing webssh2"
-        sh ./scripts/install-webssh2.sh
+        ./scripts/install-webssh2.sh
         ;;
     [Nn]* )
         echo "skip webssh2"
@@ -196,31 +225,42 @@ case $yn in
 esac
 
 # install/reinstall navidrome
-echo "install/reinstall navidrome ? :y/n"
-read flag
-if [ "$flag" = "y" ];then
-    sh ./scripts/install-navidrome.sh
-fi
+read -p "do you want to install/reinstall navidrome ? [y/n]:" yn
+case $yn in
+    [Yy]* )
+        echo "installing navidrome"
+    ./scripts/install-navidrome.sh
+        ;;
+    [Nn]* )
+        echo "skip webssh2"
+        ;;
+    * )
+        echo "skip webssh2"
+        ;;
+esac
 
 
 # install/reinstall vaultwarden
-if [ "$ssl" = "1" ];then
-    echo "install/reinstall vaultwarden ? :y/n"
+case $ssl in
+[yY]*)
+    echo "do you want to install/reinstall vaultwarden ? [y/n]:"
     read flag
     if [ "$flag" = "y" ];then
-        sh ./scripts/install-vaultwarden.sh
+        ./scripts/install-vaultwarden.sh
     fi
-else
-    echo "vaultwarden must run with https, skip"
-fi
+    ;;
+*)
+echo "vaultwarden must running with ssl , skip vaultwarden"
+;;
+esac
 
 # install/reinstall aria2
+read -p "do you want to install/reinstall aria2 ? [y/n]:" yn
 
-read -p "do you want to install/reinstall aria2 ? [y/n]" yn
 case $yn in
     [Yy]* )
         echo "installing aria2"
-        sh ./scripts/install-aria2.sh
+        ./scripts/install-aria2.sh
         ;;
     [Nn]* )
         echo "skip aria2"
@@ -231,11 +271,11 @@ case $yn in
 esac
 
 # install/reinstall nginx
-read -p "do you want to install/reinstall nginx ? [y/n]" yn
+read -p "do you want to install/reinstall nginx ? [y/n]:" yn
 case $yn in
     [Yy]* )
         echo "installing nginx"
-        sh ./scripts/install-nginx.sh
+        ./scripts/install-nginx.sh
         ;;
     [Nn]* )
         echo "skip nginx"
@@ -246,5 +286,7 @@ case $yn in
 esac
 
 echo "You have finished the install and your home server is ready after all docker container ready"
-echo "There is docker container status or you can run docker ps -a to check them,thinks for used:"
+
+echo "There is docker container status or you can run docker ps -a to check them,thinks for used this script"
+
 docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"

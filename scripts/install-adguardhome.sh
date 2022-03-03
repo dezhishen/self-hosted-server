@@ -1,20 +1,24 @@
 # /bin/bash
 
 echo "copy config file to nginx"
-if [ $ssl -eq 1 ]; then
+case $ssl in
+[yY]* )
     http_scheme="https"
-    cp -f ./conf.d.https/adguardhome.conf $base_data_dir/nginx/conf/conf.d/adguardhome.conf
-    echo "copy config ./conf.d.https/adguardhome.conf to $base_data_dir/nginx/conf/conf.d/adguardhome.conf success"
-else
+    cp -f `dirname $0`/../conf.d.https/adguardhome.conf $base_data_dir/nginx/conf/conf.d/adguardhome.conf
+    echo "copy config `dirname $0`/conf.d.https/adguardhome.conf to $base_data_dir/nginx/conf/conf.d/adguardhome.conf success"
+    ;;
+* )
     http_scheme="http"
-    cp -f ./conf.d/adguardhome.conf $base_data_dir/nginx/conf/conf.d/adguardhome.conf
-    echo "copy config ./conf.d/adguardhome.conf to $base_data_dir/nginx/conf/conf.d/adguardhome.conf success"
-fi
-sh fun-create-dir.sh $base_data_dir/adguardhome
-sh fun-create-dir.sh $base_data_dir/adguardhome/work
-sh fun-create-dir.sh $base_data_dir/adguardhome/conf
+    cp -f `dirname $0`/../conf.d/adguardhome.conf $base_data_dir/nginx/conf/conf.d/adguardhome.conf
+    echo "copy config `dirname $0`/conf.d/adguardhome.conf to $base_data_dir/nginx/conf/conf.d/adguardhome.conf success"
+    ;;
+esac
 
-sh fun-container-stop.sh adguardhome
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome/work
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome/conf
+
+sh `dirname $0`/fun-container-stop.sh adguardhome
 
 echo "star adguardhome"
 docker run -d --restart=always --name=adguardhome \

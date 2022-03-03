@@ -1,18 +1,21 @@
 # /bin/bash
 echo "copy config file to nginx"
-if [ $ssl -eq 1 ]; then
-    echo "use ssl"
+case $ssl in
+[yY]* )
     http_scheme="https"
-    cp -f ./conf.d.https/portainer.conf $base_data_dir/nginx/conf/conf.d/portainer.conf
-    echo "copy config ./conf.d.https/portainer.conf to $base_data_dir/nginx/conf/conf.d/portainer.conf success"
-else
+    cp -f `dirname $0`/../conf.d.https/portainer.conf $base_data_dir/nginx/conf/conf.d/portainer.conf
+    echo "copy config `dirname $0`/conf.d.https/portainer.conf to $base_data_dir/nginx/conf/conf.d/portainer.conf success"
+    ;;
+* )
     http_scheme="http"
-    cp -f ./conf.d/portainer.conf $base_data_dir/nginx/conf/conf.d/portainer.conf
-    echo "copy config ./conf.d/portainer.conf to $base_data_dir/nginx/conf/conf.d/portainer.conf success"
-fi
-sh fun-create-dir.sh $base_data_dir/portainer
-sh fun-create-dir.sh $base_data_dir/portainer/data
-sh fun-container-stop.sh portainer
+    cp -f `dirname $0`/../conf.d/portainer.conf $base_data_dir/nginx/conf/conf.d/portainer.conf
+    echo "copy config `dirname $0`/conf.d/portainer.conf to $base_data_dir/nginx/conf/conf.d/portainer.conf success"
+    ;;
+esac
+
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/portainer
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/portainer/data
+sh `dirname $0`/fun-container-stop.sh portainer
 
 echo "star portainer"
 docker run -d --restart=always --name=portainer \

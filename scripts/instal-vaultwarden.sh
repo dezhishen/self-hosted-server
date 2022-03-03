@@ -1,18 +1,22 @@
 # /bin/bash
 echo "copy config file to nginx"
-if [ $ssl -eq 1 ]; then
+case $ssl in
+[yY]* )
     http_scheme="https"
-    cp -f ./conf.d.https/vaultwarden.conf $base_data_dir/nginx/conf/conf.d/vaultwarden.conf
-    echo "copy config ./conf.d.https/vaultwarden.conf to $base_data_dir/nginx/conf/conf.d/vaultwarden.conf success"
-else
+    cp -f `dirname $0`/../conf.d.https/vaultwarden.conf $base_data_dir/nginx/conf/conf.d/vaultwarden.conf
+    echo "copy config `dirname $0`/conf.d.https/vaultwarden.conf to $base_data_dir/nginx/conf/conf.d/vaultwarden.conf success"
+    ;;
+* )
     http_scheme="http"
-    cp -f ./conf.d/vaultwarden.conf $base_data_dir/nginx/conf/conf.d/vaultwarden.conf
-    echo "copy config ./conf.d/vaultwarden.conf to $base_data_dir/nginx/conf/conf.d/vaultwarden.conf success"
-fi
-fun-create-dir.sh $base_data_dir/vaultwarden
-fun-create-dir.sh $base_data_dir/vaultwarden/data
+    cp -f `dirname $0`/../conf.d/vaultwarden.conf $base_data_dir/nginx/conf/conf.d/vaultwarden.conf
+    echo "copy config `dirname $0`/conf.d/vaultwarden.conf to $base_data_dir/nginx/conf/conf.d/vaultwarden.conf success"
+    ;;
+esac
 
-fun-container-stop.sh vaultwarden
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden/data
+
+sh `dirname $0`/fun-container-stop.sh vaultwarden
 
 echo "star vaultwarden"
 
@@ -33,9 +37,9 @@ read -p "Do you want to install/reinstall vaultwarden-backup? [y/n]: " yn
 case $yn in
     [Yy]* )
         echo "install vaultwarden-backup"
-        fun-create-dir.sh $base_data_dir/vaultwarden-backup
-        fun-create-dir.sh $base_data_dir/vaultwarden-backup/data
-        fun-container-stop.sh vaultwarden-backup
+        sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden-backup
+        sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden-backup/data
+        sh `dirname $0`/fun-container-stop.sh vaultwarden-backup
         echo "star vaultwarden-backup"
         docker run -d --name vaultwarden-backup \
         --restart=always \

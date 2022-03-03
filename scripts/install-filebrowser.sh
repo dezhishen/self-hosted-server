@@ -1,17 +1,21 @@
 # /bin/bash
 
 echo "copy config file to nginx"
-if [ $ssl -eq 1 ]; then
+case $ssl in
+[yY]* )
     http_scheme="https"
-    cp -f ./conf.d.https/filebrowser.conf $base_data_dir/nginx/conf/conf.d/filebrowser.conf
-    echo "copy config ./conf.d.https/filebrowser.conf to $base_data_dir/nginx/conf/conf.d/filebrowser.conf success"
-else
+    cp -f `dirname $0`/../conf.d.https/filebrowser.conf $base_data_dir/nginx/conf/conf.d/filebrowser.conf
+    echo "copy config `dirname $0`/conf.d.https/filebrowser.conf to $base_data_dir/nginx/conf/conf.d/filebrowser.conf success"
+    ;;
+* )
     http_scheme="http"
-    cp -f ./conf.d/filebrowser.conf $base_data_dir/nginx/conf/conf.d/filebrowser.conf
-    echo "copy config ./conf.d/filebrowser.conf to $base_data_dir/nginx/conf/conf.d/filebrowser.conf success"
-fi
-sh fun-create-dir.sh $base_data_dir/filebrowser
-sh fun-container-stop.sh filebrowser
+    cp -f `dirname $0`/../conf.d/filebrowser.conf $base_data_dir/nginx/conf/conf.d/filebrowser.conf
+    echo "copy config `dirname $0`/conf.d/filebrowser.conf to $base_data_dir/nginx/conf/conf.d/filebrowser.conf success"
+    ;;
+esac
+
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/filebrowser
+sh `dirname $0`/fun-container-stop.sh filebrowser
 
 echo "copy config file to filebrowser"
 if [ ! -f $base_data_dir/filebrowser/filebrowser.db ];then

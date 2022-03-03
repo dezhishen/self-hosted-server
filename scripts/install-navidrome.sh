@@ -1,20 +1,24 @@
 # /bin/bash
 echo "copy config file to nginx"
-if [ $ssl -eq 1 ]; then
+case $ssl in
+[yY]* )
     http_scheme="https"
-    cp -f ./conf.d.https/navidrome.conf $base_data_dir/nginx/conf/conf.d/navidrome.conf
-    echo "copy config ./conf.d.https/navidrome.conf to $base_data_dir/nginx/conf/conf.d/navidrome.conf success"
-else
+    cp -f `dirname $0`/../conf.d.https/navidrome.conf $base_data_dir/nginx/conf/conf.d/navidrome.conf
+    echo "copy config `dirname $0`/conf.d.https/navidrome.conf to $base_data_dir/nginx/conf/conf.d/navidrome.conf success"
+    ;;
+* )
     http_scheme="http"
-    cp -f ./conf.d/navidrome.conf $base_data_dir/nginx/conf/conf.d/navidrome.conf
-    echo "copy config ./conf.d/navidrome.conf to $base_data_dir/nginx/conf/conf.d/navidrome.conf success"
-fi
-sh fun-create-dir.sh $base_data_dir/navidrome
-sh fun-create-dir.sh $base_data_dir/navidrome/data
-sh fun-create-dir.sh $base_data_dir/public
-sh fun-create-dir.sh $base_data_dir/public/music
+    cp -f `dirname $0`/../conf.d/navidrome.conf $base_data_dir/nginx/conf/conf.d/navidrome.conf
+    echo "copy config `dirname $0`/conf.d/navidrome.conf to $base_data_dir/nginx/conf/conf.d/navidrome.conf success"
+    ;;
+esac
 
-sh fun-container-stop.sh navidrome
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/navidrome
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/navidrome/data
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/public
+sh `dirname $0`/fun-create-dir.sh $base_data_dir/public/music
+
+sh `dirname $0`/fun-container-stop.sh navidrome
 echo "start navidrome"
 docker run -d --name navidrome \
 --network=$docker_network_name --network-alias=navidrome \

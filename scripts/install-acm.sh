@@ -17,7 +17,7 @@ if [ ! -n "$SSL_EMAIL" ]; then
     echo "请输入ssl的邮箱:"
     read SSL_EMAIL
 fi
-funStopContainer acme
+sh `dirname $0`/fun-container-stop.sh acme
 docker run --name=acme --restart=always -d \
     -u $(id -u):$(id -g) \
     -e CF_Token=`echo $CF_Token`\
