@@ -24,14 +24,14 @@ while getopts p:d:sugh OPTION; do
         exit 1;;
     esac
 done
-
+domain=$(sh ./scripts/read-args-with-hisory.sh domain)
 if [ ! -n "$domain" ]; then  
     read -p "please input the domain of your home server:" domain
     if [ ! -n "$domain" ]; then  
         domain="self.docker.com"
     fi
 fi
-
+base_data_dir=$(sh ./scripts/read-args-with-hisory.sh base_data_dir)
 if [ ! -n "$base_data_dir" ]; then  
     read -p "please input the base data dir of your home server,default is /data/data:" base_data_dir
     read base_data_dir
@@ -39,7 +39,7 @@ if [ ! -n "$base_data_dir" ]; then
         base_data_dir="/docker_data"
     fi
 fi
-
+ssl=$(sh ./scripts/read-args-with-hisory.sh ssl)
 if [ ! -n "$ssl" ]; then
     read -p "Do you want to enable ssl? [y/n]: " yn
     case $yn in
@@ -54,7 +54,7 @@ if [ ! -n "$ssl" ]; then
             ;;
     esac
 fi
-
+generatessl=$(sh ./scripts/read-args-with-hisory.sh generatessl)
 if [ ! -n "$generatessl" ]; then  
     read -p "Do you want to generate ssl cert? [y/n]: " yn
     case $yn in
@@ -69,7 +69,7 @@ if [ ! -n "$generatessl" ]; then
             ;;
     esac
 fi
-
+autossl=$(sh ./scripts/read-args-with-hisory.sh autossl)
 if [ ! -n "$autossl" ]; then  
     read -p "Do you want to enable auto update ssl cert? [y/n]: " yn
     case $yn in
