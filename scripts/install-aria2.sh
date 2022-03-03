@@ -40,6 +40,8 @@ docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m 
     -e "TZ=Asia/Shanghai" \
     -e RPC_PORT=6800 \
     -e LISTEN_PORT=6888 \
+    -p 6888:6888/udp \
+    -p 6800:6800/tcp \
     -v $base_data_dir/aria2:/config \
     -v $base_data_dir/public/downloads:/downloads \
     -v $base_data_dir/public/:/public \
