@@ -6,6 +6,15 @@ export BACKUP_SUCCESS_LANG="backup success, source[%s], target[%s]"
 export BASE_DATA_DIR_LANG="base data dir"
 
 export COPY_NGINX_FILE_LANG="copy nginx config file"
+export CLOUDFLARE_ACCOUNT_EMAIL_LANG="cloudflare account email"
+export CLOUDFLARE_DDNS_IPV4_ENABLE_LANG="cloudflare ddns ipv4 enable"
+export CLOUDFLARE_DDNS_IPV6_ENABLE_LANG="cloudflare ddns ipv6 enable" 
+export CLOUDFLARE_ZONE_ID_LANG="cloudflare zone id"
+export CLOUDFLARE_API_KEY_LANG="cloudflare api key"
+export CLOUDFLARE_API_TOKEN_LANG="cloudflare api token"
+
+export CLOUDFLARE_PROXIED_SUBDOMAINS_LANG="subdomains needs to be proxied by cloudflare "
+export CLOUDFLARE_UNPROXIED_SUBDOMAINS_LANG="subdomains not needs to proxied by cloudflare "
 export CREATE_BASE_DATA_DIR_LANG="create base data dir"
 export CREATE_DIR_SUCCESS_LANG="create dir[%s] success"
 

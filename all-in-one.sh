@@ -130,7 +130,9 @@ if [ ! -n "$autossl" ]; then
 fi
 echo ""
 echo ""
-printf "$INSTALL_CONFIG_LANG" $domain $base_data_dir $ssl $generatessl $autossl | column -t
+
+printf "$INSTALL_CONFIG_LANG" "$domain" "$base_data_dir" "$ssl" "$generatessl" "$autossl" | column -t
+
 echo ""
 echo ""
 echo $ARE_YOU_SURE_INSTALL_LANG
@@ -287,6 +289,14 @@ read yn
 case $yn in
     [Yy]* )
         sh ./scripts/install-samba.sh
+        ;;
+esac
+# install/reinstall ddns
+printf "$INSTALL_TIPS" ddns
+read yn
+case $yn in
+    [Yy]* )
+        sh ./scripts/install-ddns.sh
         ;;
 esac
 

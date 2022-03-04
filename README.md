@@ -93,9 +93,10 @@
 - [x] 拆分`all-in-one.sh`的内容到其他脚本中
 - [x] 在当前会话中记录已输入的数据?
 - [x] 安装完成后打印结果
+- [ ] 备份vaultwarden 
 - [ ] https申请脚本 适配多家dns服务商
-- [ ] ipv6检测完整版
-- [ ] ddns 使用：cloudflare-dns
+- [ ] docker的ipv6完全自动化
+- [X] ddns 使用：cloudflare-dns
 
 ## 注意事项
 * 避免使用已存在的文件夹，或备份自己的文件夹
