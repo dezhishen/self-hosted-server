@@ -22,7 +22,7 @@ if [ ! -n "$SAMBA_USER_PASSWORD" ]; then
     if [ ! -n "$SAMBA_USER_PASSWORD" ]; then
         SAMBA_USER_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
     fi
-    sh `dirname $0`/set-args-to-history.sh ARIA2_RPC_SECRET $ARIA2_RPC_SECRET
+    sh `dirname $0`/set-args-to-history.sh SAMBA_USER_PASSWORD $SAMBA_USER_PASSWORD
 fi
 echo "password: $SAMBA_USER_PASSWORD"
 
@@ -34,7 +34,7 @@ docker run -d --restart=always --name=samba \
         -e TZ="Asia/Shanghai" \
         -e LANG="zh_CN.UTF-8" \
         -e SHARE="www;/mount/;yes;no;no;all;none" \
-        -e USER="$SAMBA_USER_NAME;$SAMBA_PASSWORD" \
+        -e USER="$SAMBA_USER_NAME;$SAMBA_USER_PASSWORD" \
         -e USERID=$(id -u) \
         -e GROUPID=$(id -g) \
         -v /docker_data/public:/mount \
