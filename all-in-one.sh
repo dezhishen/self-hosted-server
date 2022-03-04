@@ -282,6 +282,14 @@ case $yn in
         ;;
 esac
 
+printf "$INSTALL_TIPS" samba
+read yn
+case $yn in
+    [Yy]* )
+        sh ./scripts/install-samba.sh
+        ;;
+esac
+
 # install/reinstall nginx
 printf "$INSTALL_TIPS" nginx 
 read yn
