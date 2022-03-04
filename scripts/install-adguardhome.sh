@@ -20,6 +20,7 @@ sh `dirname $0`/fun-container-stop.sh adguardhome
 
 docker run -d --restart=always --name=adguardhome \
 -p 53:53 \
+-p 53:53/udp \
 -e TZ="Asia/Shanghai" \
 --network=$docker_network_name --network-alias=adguardhome \
 -v $base_data_dir/adguardhome/work:/opt/adguardhome/work \
