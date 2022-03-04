@@ -30,7 +30,6 @@ sh `dirname $0`/fun-container-stop.sh samba
 
 docker run -d --restart=always --name=samba \
         --network=ingress --network-alias=samba \
-        -u $(id -u):$(id -g) \
         -p 139:139 -p 445:445 \
         -e TZ="Asia/Shanghai" \
         -e LANG="zh_CN.UTF-8" \

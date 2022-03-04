@@ -4,17 +4,17 @@ lang_set="zh"
 case $lang_set in
     zh)
         echo "你选择了中文"
-        source ./lang/zh.sh
+        source "./lang/zh.sh"
         export LANG_SET=$lang_set
         ;;
     en)
         echo "you choose english"
-        source ./lang/en.sh
+        source "./lang/en.sh"
         export LANG_SET=$lang_set
         ;;
     *)
         echo "you choose nothing"
-        source ./lang/zh.sh
+        source "./lang/zh.sh"
         export LANG_SET=zh
         ;;
 esac
