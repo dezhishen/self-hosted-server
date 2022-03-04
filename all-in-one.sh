@@ -187,13 +187,13 @@ esac
 
 # create docker network
 ## print docker network list
-## input or choose your docker network name,default is ingrees
+## input or choose your docker network name,default is ingress
 docker_network_name=$(./scripts/read-args-with-history.sh docker_network_name "docker网络名称/docker network name")
 if [ ! -n "$docker_network_name" ]; then
     printf "$INPUT_TIPS" "docker network name"
     read docker_network_name
     if [ ! -n "$docker_network_name" ]; then
-        docker_network_name="ingrees"
+        docker_network_name="ingress"
     fi
     sh ./scripts/set-args-to-history.sh docker_network_name $docker_network_name
 fi
