@@ -35,7 +35,6 @@ sh `dirname $0`/fun-container-stop.sh aria2
 
 docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m \
     --network=$docker_network_name --network-alias=aria2 \
-    -u "`id -u`:`id -g`" \
     -e PUID=`id -u` -e PGID=`id -g` \
     -e UMASK_SET=022 \
     -e RPC_SECRET=`echo $ARIA2_RPC_SECRET` \
