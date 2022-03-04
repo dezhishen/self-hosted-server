@@ -1,16 +1,16 @@
 # /bin/bash
-echo $COPY_NGINX_FILE_LANG
+echo "$COPY_NGINX_FILE_LANG"
 case $ssl in
-[yY]* )
-    http_scheme="https"
-    websocket_scheme="wss"
-    cp -f `dirname $0`/../conf.d.https/aria2.conf $base_data_dir/nginx/conf/conf.d/aria2.conf
-    ;;
-* )
-    http_scheme="http"
-    websocket_scheme="ws"
-    cp -f `dirname $0`/../conf.d/aria2.conf $base_data_dir/nginx/conf/conf.d/aria2.conf
-    ;;
+    [yY]*)
+        http_scheme="https"
+        websocket_scheme="wss"
+        cp -f `dirname $0`/../conf.d.https/aria2.conf $base_data_dir/nginx/conf/conf.d/aria2.conf
+        ;;
+    *)
+        http_scheme="http"
+        websocket_scheme="ws"
+        cp -f `dirname $0`/../conf.d/aria2.conf $base_data_dir/nginx/conf/conf.d/aria2.conf
+        ;;
 esac
 
 sh `dirname $0`/fun-create-dir.sh $base_data_dir/aria2
