@@ -1,4 +1,7 @@
 # /bin/bash
+
+. `dirname $0`/fun-container-stop.sh nginx
+pwd
 case $ssl in
 [yY]* )
     http_scheme="https"
@@ -10,13 +13,15 @@ case $ssl in
         echo "[警告] 证书目录不存在"
         echo "[warning]cert dir not exists"
     fi
-    `dirname $0`/fun-create-dir.sh $base_data_dir/nginx
-    `dirname $0`/fun-create-dir.sh $base_data_dir/nginx/conf
-    cp -f `dirname $0`/../nginx.conf.https $base_data_dir/nginx/conf/nginx.conf
+    pwd
+    . `dirname $0`/fun-create-dir.sh $base_data_dir/nginx
+    . `dirname $0`/fun-create-dir.sh $base_data_dir/nginx/conf
+    cp "`dirname $0`/../nginx.conf.https" $base_data_dir/nginx/conf/nginx.conf
     ;;
 * )
     http_scheme="http"
-    cp -f `dirname $0`/../nginx.conf $base_data_dir/nginx/conf/nginx.conf
+    rm -rf $base_data_dir/nginx/conf/nginx.conf
+    cp " `dirname $0`/../nginx.conf" $base_data_dir/nginx/conf/nginx.conf
     ;;
 esac
 
@@ -25,8 +30,6 @@ echo "使用$domain替换root domain"
 echo "replace root domian in nginx conf by $domain"
 sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/nginx.conf
 sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/conf.d/*.conf
-
-`dirname $0`/fun-container-stop.sh nginx
 case $ssl in
 [yY]* )
     docker run -d --restart=always --name=nginx \

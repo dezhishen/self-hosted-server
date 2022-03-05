@@ -146,6 +146,7 @@ echo "waiting for 2 seconds,if you want to stop, press Ctrl+C"
 sleep 1
 echo "waiting for 1 seconds,if you want to stop, press Ctrl+C"
 echo "staring..."
+perl -MPOSIX -e 'tcflush 0,0'
 
 export domain=$domain
 export base_data_dir=$base_data_dir
@@ -161,8 +162,7 @@ if [ ! -d $base_data_dir ]; then
     printf "$CREATE_BASE_DATA_DIR_SUCCESS_LANG" "$base_data_dir"
 else
     # do you want to backup old data dir?
-    echo $IF_BACKUP_LANG
-    read yn
+    read -p "$IF_BACKUP_LANG" yn
     case $yn in
         [Yy]* )
             backup_dir=$base_data_dir.bak.$(date +%Y%m%d%H%M%S)
@@ -176,6 +176,8 @@ else
     esac
 fi
 echo ""
+
+perl -MPOSIX -e 'tcflush 0,0'
 
 # generate ssl cert
 case $generatessl in
@@ -191,6 +193,9 @@ esac
 # create docker network
 ## print docker network list
 ## input or choose your docker network name,default is ingress
+
+perl -MPOSIX -e 'tcflush 0,0'
+
 echo ""
 echo ""
 echo "prepare docker network"
@@ -208,6 +213,8 @@ export docker_network_name=$docker_network_name
 
 ./scripts/create-docker-network.sh $docker_network_name || exit 1
 
+perl -MPOSIX -e 'tcflush 0,0'
+
 echo ""
 echo ""
 # insatll/reinstall portainer
@@ -222,6 +229,8 @@ case $yn in
 esac
 # install/reinstall filebrowser
 
+perl -MPOSIX -e 'tcflush 0,0'
+
 echo ""
 echo ""
 printf "$INSTALL_TIPS" filebrowser
@@ -234,6 +243,8 @@ case $yn in
 esac
 # install/reinstall adguardhome
 
+perl -MPOSIX -e 'tcflush 0,0'
+
 echo ""
 echo ""
 printf "$INSTALL_TIPS" adguardhome
@@ -244,6 +255,8 @@ case $yn in
         ./scripts/install-adguardhome.sh
         ;;
 esac
+
+perl -MPOSIX -e 'tcflush 0,0'
 
 echo ""
 echo ""
@@ -259,9 +272,10 @@ case $yn in
         ;;
 esac
 
-echo ""
-echo ""
 # install/reinstall navidrome
+perl -MPOSIX -e 'tcflush 0,0'
+echo ""
+echo ""
 printf "$INSTALL_TIPS" navidrome
 read yn
 case $yn in
@@ -271,10 +285,11 @@ case $yn in
         ;;
 esac
 
-echo ""
-echo ""
 
 # install/reinstall vaultwarden
+echo ""
+echo ""
+perl -MPOSIX -e 'tcflush 0,0'
 case $ssl in
 [yY]*)
 
@@ -290,7 +305,7 @@ case $ssl in
 esac
 
 # install/reinstall aria2
-
+perl -MPOSIX -e 'tcflush 0,0'
 echo ""
 echo ""
 printf "$INSTALL_TIPS" aria2
@@ -312,6 +327,7 @@ case $yn in
         ;;
 esac
 # install/reinstall ddns
+perl -MPOSIX -e 'tcflush 0,0'
 echo ""
 echo ""
 printf "$INSTALL_TIPS" ddns
@@ -323,6 +339,7 @@ case $yn in
 esac
 
 # install/reinstall nginx
+perl -MPOSIX -e 'tcflush 0,0'
 echo ""
 echo ""
 printf "$INSTALL_TIPS" nginx 

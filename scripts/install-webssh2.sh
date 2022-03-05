@@ -1,6 +1,8 @@
 # /bin/bash
 echo $COPY_NGINX_FILE_LANG
 
+. `dirname $0`/fun-create-dir.sh $base_data_dir/nginx/conf/conf.d
+
 case $ssl in
 [yY]* )
     http_scheme="https"
@@ -13,7 +15,7 @@ case $ssl in
 esac
 
 
-`dirname $0`/fun-create-dir.sh $base_data_dir/webssh2
+. `dirname $0`/fun-create-dir.sh $base_data_dir/webssh2
 
 if [ ! -f $base_data_dir/webssh2/config.json ];then
     echo "config.json 不存在，复制./webssh2/config.json到$base_data_dir/webssh2/config.json"
@@ -23,7 +25,7 @@ else
     echo "config.json 已存在，不需要复制,config.json already exist"
 fi  
 
-`dirname $0`/fun-container-stop.sh webssh2
+. `dirname $0`/fun-container-stop.sh webssh2
 
 docker run -d --restart=always --name=webssh2 \
 --network=$docker_network_name --network-alias=webssh2 \
