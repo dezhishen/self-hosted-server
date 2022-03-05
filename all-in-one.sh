@@ -3,18 +3,18 @@
 lang_set="zh"
 case $lang_set in
     zh)
-        echo "你选择了中文 `dirname $0`/lang/zh.sh"
-        source `dirname $0`/lang/zh.sh
+        echo "你选择了中文"
+        . ./lang/zh.sh
         export LANG_SET=$lang_set
         ;;
     en)
         echo "you choose english"
-        source `dirname $0`/lang/en.sh
+        . `dirname $0`/lang/en.sh
         export LANG_SET=$lang_set
         ;;
     *)
         echo "you choose nothing"
-        source `dirname $0`./lang/zh.sh
+        . `dirname $0`./lang/zh.sh
         export LANG_SET=zh
         ;;
 esac
