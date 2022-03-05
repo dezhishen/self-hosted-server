@@ -131,20 +131,21 @@ fi
 echo ""
 echo ""
 
-printf "$INSTALL_CONFIG_LANG" "$domain" "$base_data_dir" "$ssl" "$generatessl" "$autossl" | column -t
+printf "$INSTALL_CONFIG_LANG" "$domain" "$base_data_dir" "$ssl" "$generatessl" "$autossl"
 
 echo ""
 echo ""
-echo $ARE_YOU_SURE_INSTALL_LANG
-sleep 2 && read yn
-case $yn in
-    [Yy]* )
-        ;;
-    [Nn]* )
-        exit 1;;
-    * )
-        exit 1;;
-esac
+
+echo "waiting for 5 seconds,if you want to stop, press Ctrl+C"
+sleep 1
+echo "waiting for 4 seconds,if you want to stop, press Ctrl+C"
+sleep 1
+echo "waiting for 3 seconds,if you want to stop, press Ctrl+C"
+sleep 1
+echo "waiting for 2 seconds,if you want to stop, press Ctrl+C"
+sleep 1
+echo "waiting for 1 seconds,if you want to stop, press Ctrl+C"
+echo "staring..."
 
 export domain=$domain
 export base_data_dir=$base_data_dir
@@ -190,6 +191,9 @@ esac
 # create docker network
 ## print docker network list
 ## input or choose your docker network name,default is ingress
+echo ""
+echo ""
+echo "prepare docker network"
 docker_network_name=$(./scripts/read-args-with-history.sh docker_network_name "docker网络名称/docker network name")
 if [ ! -n "$docker_network_name" ]; then
     printf "$INPUT_TIPS" "docker network name"
@@ -197,13 +201,15 @@ if [ ! -n "$docker_network_name" ]; then
     if [ ! -n "$docker_network_name" ]; then
         docker_network_name="ingress"
     fi
-    ./scripts/set-args-to-history.sh docker_network_name $docker_network_name
+    ./scripts/set-args-to-history.sh docker_network_name $docker_network_name || exit 1
 fi
 
 export docker_network_name=$docker_network_name
 
 ./scripts/create-docker-network.sh $docker_network_name || exit 1
 
+echo ""
+echo ""
 # insatll/reinstall portainer
 printf "$INSTALL_TIPS" portainer
 
@@ -216,6 +222,8 @@ case $yn in
 esac
 # install/reinstall filebrowser
 
+echo ""
+echo ""
 printf "$INSTALL_TIPS" filebrowser
 read yn
 case $yn in
@@ -226,6 +234,8 @@ case $yn in
 esac
 # install/reinstall adguardhome
 
+echo ""
+echo ""
 printf "$INSTALL_TIPS" adguardhome
 read yn
 case $yn in
@@ -235,6 +245,8 @@ case $yn in
         ;;
 esac
 
+echo ""
+echo ""
 # install/reinstall webssh2 with warning "webssh2 is not support on arm"
 printf "$WEBSSH2_WARNING"
 echo ""
@@ -247,6 +259,8 @@ case $yn in
         ;;
 esac
 
+echo ""
+echo ""
 # install/reinstall navidrome
 printf "$INSTALL_TIPS" navidrome
 read yn
@@ -257,6 +271,8 @@ case $yn in
         ;;
 esac
 
+echo ""
+echo ""
 
 # install/reinstall vaultwarden
 case $ssl in
@@ -275,6 +291,8 @@ esac
 
 # install/reinstall aria2
 
+echo ""
+echo ""
 printf "$INSTALL_TIPS" aria2
 read yn
 
@@ -284,6 +302,8 @@ case $yn in
         ;;
 esac
 
+echo ""
+echo ""
 printf "$INSTALL_TIPS" samba
 read yn
 case $yn in
@@ -292,6 +312,8 @@ case $yn in
         ;;
 esac
 # install/reinstall ddns
+echo ""
+echo ""
 printf "$INSTALL_TIPS" ddns
 read yn
 case $yn in
@@ -301,6 +323,8 @@ case $yn in
 esac
 
 # install/reinstall nginx
+echo ""
+echo ""
 printf "$INSTALL_TIPS" nginx 
 read yn
 case $yn in

@@ -18,7 +18,7 @@ esac
 if [ ! -f $base_data_dir/webssh2/config.json ];then
     echo "config.json 不存在，复制./webssh2/config.json到$base_data_dir/webssh2/config.json"
     echo "config.json not exist,copy ./webssh2/config.json to $base_data_dir/webssh2/config.json"
-    copy -f ./webssh2/config.json $base_data_dir/webssh2/config.json
+    cp -f ./webssh2/config.json $base_data_dir/webssh2/config.json
 else
     echo "config.json 已存在，不需要复制,config.json already exist"
 fi  
