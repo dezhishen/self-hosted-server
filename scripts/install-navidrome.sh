@@ -12,12 +12,12 @@ case $ssl in
     ;;
 esac
 
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/navidrome
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/navidrome/data
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/public
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/public/music
+`dirname $0`/fun-create-dir.sh $base_data_dir/navidrome
+`dirname $0`/fun-create-dir.sh $base_data_dir/navidrome/data
+`dirname $0`/fun-create-dir.sh $base_data_dir/public
+`dirname $0`/fun-create-dir.sh $base_data_dir/public/music
 
-sh `dirname $0`/fun-container-stop.sh navidrome
+`dirname $0`/fun-container-stop.sh navidrome
 docker run -d --name navidrome \
 --network=$docker_network_name --network-alias=navidrome \
 --user $(id -u):$(id -g) \

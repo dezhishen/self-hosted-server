@@ -13,12 +13,12 @@ case $ssl in
         ;;
 esac
 
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/aria2
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/public
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/public/downloads
+`dirname $0`/fun-create-dir.sh $base_data_dir/aria2
+`dirname $0`/fun-create-dir.sh $base_data_dir/public
+`dirname $0`/fun-create-dir.sh $base_data_dir/public/downloads
 
 ## input or random ARIA2_RPC_SECRET if not exist
-ARIA2_RPC_SECRET=$(sh `dirname $0`/read-args-with-history.sh ARIA2_RPC_SECRET "aria2 RPC密码/aria2 rpc secret" )
+ARIA2_RPC_SECRET=$(`dirname $0`/read-args-with-history.sh ARIA2_RPC_SECRET "aria2 RPC密码/aria2 rpc secret" )
 if [ ! -n "$ARIA2_RPC_SECRET" ]; then
     ## input your ARIA2_RPC_SECRET
     echo "请输入ara2的rpc密钥，如果不设置，将会在随机生成"
@@ -29,9 +29,9 @@ if [ ! -n "$ARIA2_RPC_SECRET" ]; then
         echo "随机生成的密钥为：$ARIA2_RPC_SECRET"
         echo "random generate secret:$ARIA2_RPC_SECRET"
     fi
-    sh `dirname $0`/set-args-to-history.sh ARIA2_RPC_SECRET $ARIA2_RPC_SECRET
+    `dirname $0`/set-args-to-history.sh ARIA2_RPC_SECRET $ARIA2_RPC_SECRET
 fi
-sh `dirname $0`/fun-container-stop.sh aria2
+`dirname $0`/fun-container-stop.sh aria2
 
 docker run -d   --name aria2   --restart unless-stopped   --log-opt max-size=1m \
     --network=$docker_network_name --network-alias=aria2 \

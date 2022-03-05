@@ -10,8 +10,8 @@ case $ssl in
         echo "[警告] 证书目录不存在"
         echo "[warning]cert dir not exists"
     fi
-    sh `dirname $0`/fun-create-dir.sh $base_data_dir/nginx
-    sh `dirname $0`/fun-create-dir.sh $base_data_dir/nginx/conf
+    `dirname $0`/fun-create-dir.sh $base_data_dir/nginx
+    `dirname $0`/fun-create-dir.sh $base_data_dir/nginx/conf
     cp -f `dirname $0`/../nginx.conf.https $base_data_dir/nginx/conf/nginx.conf
     ;;
 * )
@@ -26,7 +26,7 @@ echo "replace root domian in nginx conf by $domain"
 sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/nginx.conf
 sed -i `echo "s/\\$domain/$domain/g"` $base_data_dir/nginx/conf/conf.d/*.conf
 
-sh `dirname $0`/fun-container-stop.sh nginx
+`dirname $0`/fun-container-stop.sh nginx
 case $ssl in
 [yY]* )
     docker run -d --restart=always --name=nginx \
@@ -61,7 +61,7 @@ case $ssl in
         if [ `docker ps | grep acme | wc -l` -eq 1 ];then
             echo "证书自动更新容器acme正在运行,acme is running"
         else
-            sh install-acme.sh
+            install-acme.sh
         fi
         ;;
     esac

@@ -11,10 +11,10 @@ case $ssl in
     ;;
 esac
 
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden/data
+`dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden
+`dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden/data
 
-sh `dirname $0`/fun-container-stop.sh vaultwarden
+`dirname $0`/fun-container-stop.sh vaultwarden
 
 docker run -d --name vaultwarden \
 --restart=always \
@@ -34,9 +34,9 @@ echo ""
 # read yn
 # case $yn in
 # [Yy]* )
-#     sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden-backup
-#     sh `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden-backup/data
-#     sh `dirname $0`/fun-container-stop.sh vaultwarden-backup
+#     `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden-backup
+#     `dirname $0`/fun-create-dir.sh $base_data_dir/vaultwarden-backup/data
+#     `dirname $0`/fun-container-stop.sh vaultwarden-backup
 #     docker run -d --name vaultwarden-backup \
 #     --restart=always \
 #     -e TZ="Asia/Shanghai" \

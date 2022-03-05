@@ -4,17 +4,17 @@ lang_set="zh"
 case $lang_set in
     zh)
         echo "你选择了中文"
-        source "./lang/zh.sh"
+        `dirname $0`/lang/zh.sh
         export LANG_SET=$lang_set
         ;;
     en)
         echo "you choose english"
-        source "./lang/en.sh"
+        `dirname $0`/lang/en.sh
         export LANG_SET=$lang_set
         ;;
     *)
         echo "you choose nothing"
-        source "./lang/zh.sh"
+        `dirname $0`./lang/zh.sh
         export LANG_SET=zh
         ;;
 esac
@@ -46,18 +46,18 @@ while getopts p:d:sugh OPTION; do
 done
 
 if [ ! -n "$domain" ]; then 
-    domain=`sh ./scripts/read-args-with-history.sh domain "$DOMAIN_LANG"`
+    domain=`./scripts/read-args-with-history.sh domain "$DOMAIN_LANG"`
     if [ ! -n "$domain" ]; then  
         printf "$INPUT_TIPS" "$DOMAIN_LANG"
         read domain
         if [ ! -n "$domain" ]; then  
             domain="self.docker.com"
         fi
-        sh ./scripts/set-args-to-history.sh domain $domain
+        ./scripts/set-args-to-history.sh domain $domain
     fi
 fi
 if [ ! -n "$base_data_dir" ]; then  
-    base_data_dir=$(sh ./scripts/read-args-with-history.sh base_data_dir "$BASE_DATA_DIR_LANG")
+    base_data_dir=$(./scripts/read-args-with-history.sh base_data_dir "$BASE_DATA_DIR_LANG")
     if [ ! -n "$base_data_dir" ];then
         printf "$INPUT_TIPS" "$BASE_DATA_DIR_LANG"
         read base_data_dir
@@ -70,7 +70,7 @@ fi
 
 if [ ! -n "$ssl" ]; then
     prompt=`printf " $ENABLE_TIPS " https`
-    ssl=$(sh ./scripts/read-args-with-history.sh ssl "$prompt")
+    ssl=$(./scripts/read-args-with-history.sh ssl "$prompt")
     if [ ! -n "$ssl" ]; then
         echo $prompt
         read yn
@@ -90,7 +90,7 @@ if [ ! -n "$ssl" ]; then
 fi
 
 if [ ! -n "$generatessl" ]; then  
-    generatessl=$(sh ./scripts/read-args-with-history.sh generatessl " $GENERATE_TIPS ")
+    generatessl=$(./scripts/read-args-with-history.sh generatessl " $GENERATE_TIPS ")
     if [ ! -n "$generatessl" ]; then
         printf "$GENERATE_TIPS"
         read yn
@@ -110,7 +110,7 @@ if [ ! -n "$generatessl" ]; then
 fi
 
 if [ ! -n "$autossl" ]; then  
-    autossl=$(sh ./scripts/read-args-with-history.sh autossl " `printf "$ENABLE_TIPS" "$UPDATE_SSL_CERT_LANG"` ")
+    autossl=$(./scripts/read-args-with-history.sh autossl " `printf "$ENABLE_TIPS" "$UPDATE_SSL_CERT_LANG"` ")
     if [ ! -n "$autossl" ]; then
         printf "$ENABLE_TIPS" "$UPDATE_SSL_CERT_LANG"
         read yn
@@ -197,12 +197,12 @@ if [ ! -n "$docker_network_name" ]; then
     if [ ! -n "$docker_network_name" ]; then
         docker_network_name="ingress"
     fi
-    sh ./scripts/set-args-to-history.sh docker_network_name $docker_network_name
+    ./scripts/set-args-to-history.sh docker_network_name $docker_network_name
 fi
 
 export docker_network_name=$docker_network_name
 
-sh ./scripts/create-docker-network.sh $docker_network_name || exit 1
+./scripts/create-docker-network.sh $docker_network_name || exit 1
 
 # insatll/reinstall portainer
 printf "$INSTALL_TIPS" portainer
@@ -280,7 +280,7 @@ read yn
 
 case $yn in
     [Yy]* )
-        sh ./scripts/install-aria2.sh
+        ./scripts/install-aria2.sh
         ;;
 esac
 
@@ -288,7 +288,7 @@ printf "$INSTALL_TIPS" samba
 read yn
 case $yn in
     [Yy]* )
-        sh ./scripts/install-samba.sh
+        ./scripts/install-samba.sh
         ;;
 esac
 # install/reinstall ddns
@@ -296,7 +296,7 @@ printf "$INSTALL_TIPS" ddns
 read yn
 case $yn in
     [Yy]* )
-        sh ./scripts/install-ddns.sh
+        ./scripts/install-ddns.sh
         ;;
 esac
 

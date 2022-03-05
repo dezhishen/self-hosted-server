@@ -12,11 +12,11 @@ case $ssl in
     ;;
 esac
 
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome/work
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome/conf
+`dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome
+`dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome/work
+`dirname $0`/fun-create-dir.sh $base_data_dir/adguardhome/conf
 
-sh `dirname $0`/fun-container-stop.sh adguardhome
+`dirname $0`/fun-container-stop.sh adguardhome
 
 docker run -d --restart=always --name=adguardhome \
 -p 53:53 \

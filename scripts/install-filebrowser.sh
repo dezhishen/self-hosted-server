@@ -12,8 +12,8 @@ case $ssl in
     ;;
 esac
 
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/filebrowser
-sh `dirname $0`/fun-container-stop.sh filebrowser
+`dirname $0`/fun-create-dir.sh $base_data_dir/filebrowser
+`dirname $0`/fun-container-stop.sh filebrowser
 
 echo "复制filebrowser的配置文件,copy filebrowser config file"
 if [ ! -f $base_data_dir/filebrowser/filebrowser.db ];then

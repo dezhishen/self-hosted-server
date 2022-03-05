@@ -12,9 +12,9 @@ case $ssl in
     ;;
 esac
 
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/portainer
-sh `dirname $0`/fun-create-dir.sh $base_data_dir/portainer/data
-sh `dirname $0`/fun-container-stop.sh portainer
+`dirname $0`/fun-create-dir.sh $base_data_dir/portainer
+`dirname $0`/fun-create-dir.sh $base_data_dir/portainer/data
+`dirname $0`/fun-container-stop.sh portainer
 
 docker run -d --restart=always --name=portainer \
 -e TZ="Asia/Shanghai" \

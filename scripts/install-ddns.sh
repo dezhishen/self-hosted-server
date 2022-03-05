@@ -1,7 +1,7 @@
 # /bin/bash
 echo "仅支持cloudflare的ddns"
 
-CLOUDFLARE_ACCOUNT_EMAIL=$(sh `dirname $0`/read-args-with-history.sh cloudflare_account_email "$CLOUDFLARE_ACCOUNT_EMAIL_LANG")
+CLOUDFLARE_ACCOUNT_EMAIL=$(`dirname $0`/read-args-with-history.sh cloudflare_account_email "$CLOUDFLARE_ACCOUNT_EMAIL_LANG")
 if [ ! -n "$CLOUDFLARE_ACCOUNT_EMAIL" ]; then
     printf "$INPUT_TIPS" "$CLOUDFLARE_ACCOUNT_EMAIL_LANG"
     read CLOUDFLARE_ACCOUNT_EMAIL
@@ -13,7 +13,7 @@ if [ ! -n "$CLOUDFLARE_ACCOUNT_EMAIL" ]; then
     `dirname $0`/set-args-to-history.sh cloudflare_account_email $CLOUDFLARE_ACCOUNT_EMAIL
 fi
 
-CLOUDFLARE_API_KEY=$(sh `dirname $0`/read-args-with-history.sh cloudflare_api_key "$CLOUDFLARE_API_KEY_LANG")
+CLOUDFLARE_API_KEY=$(`dirname $0`/read-args-with-history.sh cloudflare_api_key "$CLOUDFLARE_API_KEY_LANG")
 if [ ! -n "$CLOUDFLARE_API_KEY" ]; then
     printf "$INPUT_TIPS" "$CLOUDFLARE_API_KEY_LANG"
     read CLOUDFLARE_API_KEY
@@ -25,7 +25,7 @@ if [ ! -n "$CLOUDFLARE_API_KEY" ]; then
     `dirname $0`/set-args-to-history.sh cloudflare_api_key $CLOUDFLARE_API_KEY
 fi
 
-CLOUDFLARE_API_TOKEN=$(sh `dirname $0`/read-args-with-history.sh cloudflare_api_token "$CLOUDFLARE_API_TOKEN_LANG")
+CLOUDFLARE_API_TOKEN=$(`dirname $0`/read-args-with-history.sh cloudflare_api_token "$CLOUDFLARE_API_TOKEN_LANG")
 if [ ! -n "$CLOUDFLARE_API_TOKEN" ]; then
     printf "$INPUT_TIPS" "$CLOUDFLARE_API_TOKEN_LANG"
     read CLOUDFLARE_API_TOKEN
@@ -37,7 +37,7 @@ if [ ! -n "$CLOUDFLARE_API_TOKEN" ]; then
     `dirname $0`/set-args-to-history.sh cloudflare_api_token $CLOUDFLARE_API_TOKEN
 fi
 
-CLOUDFLARE_ZONE_ID=$(sh `dirname $0`/read-args-with-history.sh cloudflare_zone_id "$CLOUDFLARE_ZONE_ID_LANG")
+CLOUDFLARE_ZONE_ID=$(`dirname $0`/read-args-with-history.sh cloudflare_zone_id "$CLOUDFLARE_ZONE_ID_LANG")
 if [ ! -n "$CLOUDFLARE_ZONE_ID" ]; then
     printf "$INPUT_TIPS" "$CLOUDFLARE_ZONE_ID_LANG"
     read CLOUDFLARE_ZONE_ID
@@ -49,7 +49,7 @@ if [ ! -n "$CLOUDFLARE_ZONE_ID" ]; then
     `dirname $0`/set-args-to-history.sh cloudflare_zone_id $CLOUDFLARE_ZONE_ID
 fi
 # set enable of cloudflare ddns ipv4, default is enable
-CLOUDFLARE_DDNS_IPV4_ENABLE=$(sh `dirname $0`/read-args-with-history.sh cloudflare_ddns_ipv4_enable "$CLOUDFLARE_DDNS_IPV4_ENABLE_LANG")
+CLOUDFLARE_DDNS_IPV4_ENABLE=$(`dirname $0`/read-args-with-history.sh cloudflare_ddns_ipv4_enable "$CLOUDFLARE_DDNS_IPV4_ENABLE_LANG")
 if [ ! -n "$CLOUDFLARE_DDNS_IPV4_ENABLE" ];then
     printf "$INPUT_WIRH_DEFAULT_LANG" "$CLOUDFLARE_DDNS_IPV4_ENABLE_LANG" "y"
     read CLOUDFLARE_DDNS_IPV4_ENABLE
@@ -59,7 +59,7 @@ if [ ! -n "$CLOUDFLARE_DDNS_IPV4_ENABLE" ];then
     `dirname $0`/set-args-to-history.sh cloudflare_ddns_ipv4_enable $CLOUDFLARE_DDNS_IPV4_ENABLE
 fi
 # set enable of cloudflare ddns ipv6, default is enable
-CLOUDFLARE_DDNS_IPV6_ENABLE=$(sh `dirname $0`/read-args-with-history.sh cloudflare_ddns_ipv6_enable "$CLOUDFLARE_DDNS_IPV6_ENABLE_LANG")
+CLOUDFLARE_DDNS_IPV6_ENABLE=$(`dirname $0`/read-args-with-history.sh cloudflare_ddns_ipv6_enable "$CLOUDFLARE_DDNS_IPV6_ENABLE_LANG")
 if [ ! -n "$CLOUDFLARE_DDNS_IPV6_ENABLE" ];then
     printf "$INPUT_WIRH_DEFAULT_LANG" "$CLOUDFLARE_DDNS_IPV6_ENABLE_LANG" "y"
     read CLOUDFLARE_DDNS_IPV6_ENABLE
@@ -70,7 +70,7 @@ if [ ! -n "$CLOUDFLARE_DDNS_IPV6_ENABLE" ];then
 fi
 
 # 输入需要被代理的子域名，多个子域名用,分隔
-CLOUDFLARE_PROXIED_SUBDOMAINS=$(sh `dirname $0`/read-args-with-history.sh CLOUDFLARE_PROXIED_SUBDOMAINS "$CLOUDFLARE_PROXIED_SUBDOMAINS_LANG")
+CLOUDFLARE_PROXIED_SUBDOMAINS=$(`dirname $0`/read-args-with-history.sh CLOUDFLARE_PROXIED_SUBDOMAINS "$CLOUDFLARE_PROXIED_SUBDOMAINS_LANG")
 # 如果为空，则需要用户输入
 if [ ! -n "$CLOUDFLARE_PROXIED_SUBDOMAINS" ];then
     printf "$INPUT_TIPS" "$CLOUDFLARE_PROXIED_SUBDOMAINS_LANG"
@@ -82,7 +82,7 @@ if [ ! -n "$CLOUDFLARE_PROXIED_SUBDOMAINS" ];then
 fi
 
 # 输入不需要被代理的子域名，多个子域名用,分隔
-CLOUDFLARE_UNPROXIED_SUBDOMAINS=$(sh `dirname $0`/read-args-with-history.sh CLOUDFLARE_UNPROXIED_SUBDOMAINS "$CLOUDFLARE_UNPROXIED_SUBDOMAINS_LANG")
+CLOUDFLARE_UNPROXIED_SUBDOMAINS=$(`dirname $0`/read-args-with-history.sh CLOUDFLARE_UNPROXIED_SUBDOMAINS "$CLOUDFLARE_UNPROXIED_SUBDOMAINS_LANG")
 # 如果为空，则需要用户输入
 if [ ! -n "$CLOUDFLARE_UNPROXIED_SUBDOMAINS" ];then
     printf "$INPUT_TIPS" "$CLOUDFLARE_UNPROXIED_SUBDOMAINS_LANG"

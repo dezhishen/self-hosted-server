@@ -1,8 +1,8 @@
 # /bin/bash
 
-sh `dirname $0`/fun-container-stop.sh samba
+`dirname $0`/fun-container-stop.sh samba
 
-SAMBA_USER_NAME=$(sh `dirname $0`/read-args-with-history.sh SAMBA_USER_NAME "smb's userName" )
+SAMBA_USER_NAME=$(`dirname $0`/read-args-with-history.sh SAMBA_USER_NAME "smb's userName" )
 if [ ! -n "$SAMBA_USER_NAME" ]; then
     ## input your SAMBA_USER_NAME,or defaut is amdin
     printf "$INPUT_WIRH_DEFAULT_LANG" "smb's userName" "admin"
@@ -10,11 +10,11 @@ if [ ! -n "$SAMBA_USER_NAME" ]; then
     if [ ! -n "$SAMBA_USER_NAME" ]; then
         SAMBA_USER_NAME="amdin"
     fi
-    sh `dirname $0`/set-args-to-history.sh SAMBA_USER_NAME $SAMBA_USER_NAME
+    `dirname $0`/set-args-to-history.sh SAMBA_USER_NAME $SAMBA_USER_NAME
 fi
 
 echo "user name：$SAMBA_USER_NAME"
-SAMBA_USER_PASSWORD=$(sh `dirname $0`/read-args-with-history.sh SAMBA_USER_PASSWORD "smb's userPassword" )
+SAMBA_USER_PASSWORD=$(`dirname $0`/read-args-with-history.sh SAMBA_USER_PASSWORD "smb's userPassword" )
 if [ ! -n "$SAMBA_USER_PASSWORD" ]; then
     ## input your SAMBA_USER_PASSWORD,or random
     printf "$INPUT_OR_RAND_LANG" "smb's userPassword"
@@ -22,11 +22,11 @@ if [ ! -n "$SAMBA_USER_PASSWORD" ]; then
     if [ ! -n "$SAMBA_USER_PASSWORD" ]; then
         SAMBA_USER_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
     fi
-    sh `dirname $0`/set-args-to-history.sh SAMBA_USER_PASSWORD $SAMBA_USER_PASSWORD
+    `dirname $0`/set-args-to-history.sh SAMBA_USER_PASSWORD $SAMBA_USER_PASSWORD
 fi
 echo "password: $SAMBA_USER_PASSWORD"
 
-sh `dirname $0`/fun-container-stop.sh samba
+`dirname $0`/fun-container-stop.sh samba
 
 docker run -d --restart=always --name=samba \
         --network=ingress --network-alias=samba \

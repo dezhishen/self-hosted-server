@@ -6,14 +6,14 @@ echo "docker network create $docker_network_name"
 
 # check has ipv6 address
 ## show eth-interfaces and choose one
-eth_interface=$(sh `dirname $0`/read-args-with-history.sh eth_interface "网卡设备名称/eth-interface")
+eth_interface=$(`dirname $0`/read-args-with-history.sh eth_interface "网卡设备名称/eth-interface")
 echo $eth_interface
 if [ ! -n "$eth_interface" ];then
     ip addr | grep -E '^[0-9]+: ' | awk '{print $2}' | sed 's/://g' | sed 's/@//g'
     echo "请输入你的主网卡"
     echo "please input your eth-interface:"
     read eth_interface
-    sh `dirname $0`/set-args-to-history.sh eth_interface $eth_interface
+    `dirname $0`/set-args-to-history.sh eth_interface $eth_interface
 fi
 ipv6_addr=$(ip -6 addr show $eth_interface | grep inet6 | grep -v "fe80" | awk '{print $2}' | awk -F '/' '{print $1}')
 if [ -n "$ipv6_addr" ]; then
