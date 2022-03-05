@@ -1,3 +1,4 @@
+# /bin/bash
 
 export ARE_YOU_SURE_INSTALL_LANG="是否安装/重装？ [y/n]: "
 export ARGS_ERROR="非法参数 %s:%s"

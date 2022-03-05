@@ -1,3 +1,5 @@
+# /bin/bash
+
 export ARE_YOU_SURE_INSTALL_LANG="are you sure to install/reinstall? [y/n]: "
 export ARGS_ERROR="invalid argument %s:%s"
 export ARGS_TIPS="-d set root domain -p set storage root dir -s enable https -g generate https cert -u auto update https cert"
