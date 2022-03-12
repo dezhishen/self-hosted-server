@@ -19,6 +19,7 @@ esac
 docker run -d --name vaultwarden \
 --restart=always \
 -e TZ="Asia/Shanghai" \
+-e SIGNUPS_ALLOWED="false" \
 -e LANG="zh_CN.UTF-8" \
 -u $(id -u):$(id -g) \
 --network=$docker_network_name --network-alias=vaultwarden \
