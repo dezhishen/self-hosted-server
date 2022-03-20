@@ -37,6 +37,7 @@ case $ssl in
         -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
         -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
         -p 80:80 -p 443:443 \
+        -p 8080:80 -p 8443:443 \
         -e TZ="Asia/Shanghai" \
         -e LANG="zh_CN.UTF-8" \
         --label=sh.acme.autoload.domain=*.$domain \
@@ -49,6 +50,7 @@ case $ssl in
     -v $base_data_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
     -v $base_data_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
     -p 80:80 -p 443:443 \
+    -p 8080:80 -p 8443:443 \
     -e TZ="Asia/Shanghai" \
     --network=ingress --network-alias=ingress \
     nginx
