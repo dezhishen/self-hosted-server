@@ -1,5 +1,5 @@
 # 自建服务脚本
-
+*new project is here https://github.com/dezhishen/self-hosted-server-traefik*
 ## 介绍
 * 纯`docker`环境下自建服务的脚本
 ### 期望
